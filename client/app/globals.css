@@ -12,3 +12,8 @@
   --color-cyan: #a8dadc;
   --color-green: #b7e1a1;
 }
+
+body {
+  font-family: var(--font-family), sans-serif;
+  font-weight: 500;
+}
