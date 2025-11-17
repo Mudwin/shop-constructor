@@ -1,0 +1,16 @@
+::-webkit-scrollbar {
+  display: none; /* временно */
+}
+
+.container {
+  background-color: var(--color-light-gray);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttons-container {
+  display: flex;
+  gap: 30px;
+}
