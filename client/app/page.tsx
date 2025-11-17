@@ -7,8 +7,12 @@ export default function HomePage() {
   return (
     <div className={styles.container}>
       <div className={styles['buttons-container']}>
-        <CustomButton>Зарегистрироваться</CustomButton>
-        <CustomButton>Войти</CustomButton>
+        <CustomButton type="enter" href="/auth/register">
+          Зарегистрироваться
+        </CustomButton>
+        <CustomButton type="enter" href="/auth/enter">
+          Войти
+        </CustomButton>
       </div>
     </div>
   );
