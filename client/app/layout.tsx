@@ -1,5 +1,5 @@
 import { Roboto } from 'next/font/google';
-import './globals.css';
+import './styles/globals.css';
 
 const robotoFont = Roboto({
   subsets: ['cyrillic', 'latin'],
