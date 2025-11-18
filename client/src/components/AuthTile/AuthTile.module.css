@@ -1,0 +1,12 @@
+.tile {
+  background-color: var(--color-white);
+  border-radius: 33px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 35px;
+  align-items: center;
+
+  padding-inline: 20px;
+  padding-block: 30px;
+}

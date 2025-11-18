@@ -3,7 +3,7 @@
 :root {
   --color-dark: #2c3e50;
   --color-blue: #3399ff;
-  --color-blue-transparent: #add6ff;
+  --color-blue-transparent: #3399ff66;
   --color-teal: #4ca8af;
   --color-light-teal: #a8dadc;
   --color-light-gray: #e0e5ec;
@@ -19,4 +19,6 @@
 body {
   font-family: var(--font-family), sans-serif;
   font-weight: 500;
+  height: 100%;
+  color: var(--color-dark);
 }
