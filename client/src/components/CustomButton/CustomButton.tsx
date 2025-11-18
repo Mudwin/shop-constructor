@@ -2,7 +2,6 @@
 
 import Button from '@mui/material/Button';
 import Link from 'next/link';
-import React from 'react';
 
 type ButtonTypes = 'enter' | 'add' | 'delete' | 'change';
 
@@ -12,12 +11,13 @@ interface CustomButtonProps {
   onClick?: () => void;
   type?: ButtonTypes;
   disabled?: boolean;
+  fontSize?: number;
 }
 
 const styles = {
   color: 'var(--color-dark)',
   padding: '6px 12px',
-  fontSize: '20px',
+  // fontSize: '20px',
   fontWeight: '600',
   textTransform: 'none',
   borderRadius: '10px',
@@ -40,8 +40,13 @@ export default function CustomButton({
   onClick,
   type = 'enter',
   disabled = false,
+  fontSize = 15,
 }: CustomButtonProps) {
-  const buttonStyles = { backgroundColor: backgroundColors[type], ...styles };
+  const buttonStyles = {
+    backgroundColor: backgroundColors[type],
+    fontSize: `${fontSize}px`,
+    ...styles,
+  };
 
   if (href) {
     return (

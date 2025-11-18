@@ -1,0 +1,11 @@
+.link {
+  font-size: 15px;
+  color: var(--color-blue);
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  transition-duration: 0.2s;
+
+  &:hover {
+    color: var(--color-dark);
+  }
+}

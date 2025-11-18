@@ -3,6 +3,8 @@
 import AuthorizationHeader from '../../../src/components/AuthHeader/AuthHeader';
 import AuthTile from '../../../src/components/AuthTile/AuthTile';
 import CustomFormField from '../../../src/components/CustomFormField/CustomFormField';
+import CustomButton from '../../../src/components/CustomButton/CustomButton';
+import AuthLink from '../../../src/components/AuthLink/AuthLink';
 
 export default function RegisterPage() {
   return (
@@ -16,6 +18,8 @@ export default function RegisterPage() {
         <CustomFormField label="Отчество" id="father-name" placeholder="Иванович" />
         <CustomFormField label="Пароль" id="password" />
         <CustomFormField label="Повторите пароль" id="repeat-password" />
+        <CustomButton>Регистрация</CustomButton>
+        <AuthLink href="/">Назад</AuthLink>
       </AuthTile>
     </>
   );
