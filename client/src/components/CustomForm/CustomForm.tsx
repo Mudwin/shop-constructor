@@ -35,7 +35,7 @@ export default function CustomForm({ children, type }: CustomFormProps) {
           <CustomButton>{formButtons[type]}</CustomButton>
         </form>
         <div className={styles.links}>
-          {type === 'login' && <AuthLink href="/">Забыли пароль?</AuthLink>}
+          {type === 'login' && <AuthLink href="/auth/forgot-password">Забыли пароль?</AuthLink>}
           <AuthLink href="/">Назад</AuthLink>
         </div>
       </AuthTile>
