@@ -11,8 +11,8 @@ export default function ResetPasswordPage() {
   return (
     <CustomForm onSubmit={handleSubmit} type="reset">
       <CustomFormField label="Код из почты" id="code" />
-      <CustomFormField label="Введите новый пароль" id="new-password" />
-      <CustomFormField label="Подтвердите пароль" id="confirm-password" />
+      <CustomFormField label="Введите новый пароль" id="newPassword" />
+      <CustomFormField label="Подтвердите пароль" id="confirmPassword" />
     </CustomForm>
   );
 }
