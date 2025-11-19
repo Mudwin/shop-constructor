@@ -9,7 +9,8 @@ interface CustomButtonProps {
   children: React.ReactNode;
   href?: string;
   onClick?: () => void;
-  type?: ButtonTypes;
+  buttonType?: ButtonTypes;
+  type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
   fontSize?: number;
 }
@@ -38,26 +39,27 @@ export default function CustomButton({
   children,
   href,
   onClick,
-  type = 'enter',
+  buttonType = 'enter',
+  type = 'button',
   disabled = false,
   fontSize = 15,
 }: CustomButtonProps) {
   const buttonStyles = {
-    backgroundColor: backgroundColors[type],
+    backgroundColor: backgroundColors[buttonType],
     fontSize: `${fontSize}px`,
     ...styles,
   };
 
   if (href) {
     return (
-      <Button sx={buttonStyles} component={Link} href={href} disabled={disabled}>
+      <Button type={type} sx={buttonStyles} component={Link} href={href} disabled={disabled}>
         {children}
       </Button>
     );
   }
 
   return (
-    <Button sx={buttonStyles} disabled={disabled} onClick={onClick}>
+    <Button type={type} sx={buttonStyles} disabled={disabled} onClick={onClick}>
       {children}
     </Button>
   );

@@ -1,3 +1,4 @@
+import { useFormContext } from 'react-hook-form';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import FormControl from '@mui/material/FormControl';
@@ -48,6 +49,14 @@ const stylesForInput = {
   },
 };
 
+const stylesForErrorMessage = {
+  color: 'var(--color-red-bright)',
+  marginTop: '0px',
+  marginLeft: '2px',
+  fontWeight: 500,
+  fontSize: '14px',
+};
+
 interface CustomFormFieldProps {
   label: string;
   id: string;
@@ -55,12 +64,18 @@ interface CustomFormFieldProps {
 }
 
 export default function CustomFormField({ label, id, placeholder }: CustomFormFieldProps) {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
+
   return (
-    <FormControl>
+    <FormControl error={!!errors[id]}>
       <InputLabel sx={stylesForLabel} htmlFor={id}>
         {label}
       </InputLabel>
-      <OutlinedInput sx={stylesForInput} id={id} placeholder={placeholder} />
+      <OutlinedInput sx={stylesForInput} id={id} placeholder={placeholder} {...register(id)} />
+      {errors[id] && <div style={stylesForErrorMessage}>{errors[id]?.message as string}</div>}
     </FormControl>
   );
 }

@@ -4,8 +4,12 @@ import CustomFormField from '../../../src/components/CustomFormField/CustomFormF
 import CustomForm from '../../../src/components/CustomForm/CustomForm';
 
 export default function ForgotPasswordPage() {
+  const handleSubmit = (event: any) => {
+    console.log(event.target);
+  };
+
   return (
-    <CustomForm type="recovery">
+    <CustomForm onSubmit={handleSubmit} type="recovery">
       <CustomFormField label="Email" id="email" />
     </CustomForm>
   );

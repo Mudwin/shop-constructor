@@ -5,7 +5,7 @@ export const loginSchema = z.object({
     .string()
     .min(4, 'Логин должен быть не менее 4 символов')
     .max(30, 'Логин должен быть не более 30 символов')
-    .regex(/^[a-zA-Z0-9]+$/, 'Только латинские буквы и цифры'),
+    .regex(/^[a-zA-Z0-9@.]+$/, 'Только латинские буквы и цифры'),
   password: z
     .string()
     .min(6, 'Пароль должен быть не менее 6 символов')
@@ -29,4 +29,25 @@ export const signupSchema = loginSchema
   .refine((data) => data.password === data.repeatPassword, {
     message: 'Пароли не совпадают',
     path: ['repeatPassword'],
+  });
+
+export const forgotPasswordSchema = z.object({
+  email: z.string().email('Некорректный email'),
+});
+
+export const resetPasswordSchema = z
+  .object({
+    code: z.string().nonempty(),
+    newPassword: z
+      .string()
+      .min(6, 'Пароль должен быть не менее 6 символов')
+      .regex(
+        /^[a-zA-Z0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+$/,
+        'Разрешены только латинские буквы, цифры и специальные символы'
+      ),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: 'Пароли не совпадают',
+    path: ['confirmPassword'],
   });

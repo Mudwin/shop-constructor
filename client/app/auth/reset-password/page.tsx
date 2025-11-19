@@ -4,8 +4,12 @@ import CustomFormField from '../../../src/components/CustomFormField/CustomFormF
 import CustomForm from '../../../src/components/CustomForm/CustomForm';
 
 export default function ResetPasswordPage() {
+  const handleSubmit = () => {
+    console.log('handling');
+  };
+
   return (
-    <CustomForm type="reset">
+    <CustomForm onSubmit={handleSubmit} type="reset">
       <CustomFormField label="Код из почты" id="code" />
       <CustomFormField label="Введите новый пароль" id="new-password" />
       <CustomFormField label="Подтвердите пароль" id="confirm-password" />

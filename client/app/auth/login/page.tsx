@@ -4,9 +4,13 @@ import CustomFormField from '../../../src/components/CustomFormField/CustomFormF
 import CustomForm from '../../../src/components/CustomForm/CustomForm';
 
 export default function EnterPage() {
+  const handleSubmit = () => {
+    console.log('handling');
+  };
+
   return (
-    <CustomForm type="login">
-      <CustomFormField label="Имя пользователя или Email" id="login" />
+    <CustomForm onSubmit={handleSubmit} type="login">
+      <CustomFormField label="Имя пользователя или Email" id="username" />
       <CustomFormField label="Пароль" id="password" />
     </CustomForm>
   );
