@@ -6,12 +6,12 @@ import CustomForm from '../../../src/components/CustomForm/CustomForm';
 export default function EnterPage() {
   const handleSubmit = () => {
     console.log('handling');
+    window.location.href = '/auth/confirm-code';
   };
 
   return (
     <CustomForm onSubmit={handleSubmit} type="login">
-      <CustomFormField label="Имя пользователя или Email" id="username" />
-      <CustomFormField label="Пароль" id="password" />
+      <CustomFormField label="Email" id="email" />
     </CustomForm>
   );
 }

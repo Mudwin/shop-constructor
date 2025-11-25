@@ -7,7 +7,7 @@ import CustomButton from '../CustomButton/CustomButton';
 import AuthLink from '../AuthLink/AuthLink';
 import { getSchemaByType } from '../../validation/schema-manager';
 
-export type CustomFormType = 'signup' | 'login' | 'recovery' | 'reset';
+export type CustomFormType = 'login' | 'confirm';
 
 interface CustomFormProps {
   children: React.ReactNode;
@@ -16,17 +16,13 @@ interface CustomFormProps {
 }
 
 const formHeaders: Record<CustomFormType, string> = {
-  signup: 'Регистрация',
-  login: 'Авторизация',
-  recovery: 'Восстановление',
-  reset: 'Восстановление',
+  login: 'Вход',
+  confirm: 'Подтверждение входа',
 };
 
 const formButtons: Record<CustomFormType, string> = {
-  signup: 'Зарегистрироваться',
-  login: 'Войти',
-  recovery: 'Получить код',
-  reset: 'Сбросить пароль',
+  login: 'Получить код',
+  confirm: 'Подтвердить',
 };
 
 export default function CustomForm({ children, type, onSubmit }: CustomFormProps) {
@@ -47,8 +43,8 @@ export default function CustomForm({ children, type, onSubmit }: CustomFormProps
           </form>
         </FormProvider>
         <div className={styles.links}>
-          {type === 'login' && <AuthLink href="/auth/forgot-password">Забыли пароль?</AuthLink>}
-          <AuthLink href="/">Назад</AuthLink>
+          {type === 'confirm' && <AuthLink href="/auth/login">Не получили код?</AuthLink>}
+          <AuthLink href="/">На главную</AuthLink>
         </div>
       </AuthTile>
     </>
