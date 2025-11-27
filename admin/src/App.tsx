@@ -1,26 +1,39 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Layout from './components/layout/Layout';
-import Administrators from './pages/Administrators/Administrators';
-import Clients from './pages/Clients/Clients';
-import Constructor from './pages/Constructor/Constructor';
-import Dashboard from './pages/Dashboard/Dashboard';
-import Orders from './pages/Orders/Orders';
-import Products from './pages/Products/Products';
-import Settings from './pages/Settings/Settings';
+import { useSelector } from 'react-redux';
+import type { RootState } from './store';
+import OnboardingPage from './pages/onboarding/OnboardingPage';
+import ProfilePage from './pages/profile/ProfilePage';
+import DashboardLayout from './components/layout/Dashboard/DashboardLayout';
+import DashboardPage from './pages/dashboard/DashboardPage';
+import OrdersPage from './pages/dashboard/orders/OrdersPage';
+import ProductsPage from './pages/dashboard/products/ProductsPage';
+import CustomersPage from './pages/dashboard/customers/CustomersPage';
+import SettingsPage from './pages/dashboard/settings/SettingsPage';
+import AdminsPage from './pages/dashboard/admins/AdminsPage';
+import ConstructorPage from './pages/dashboard/constructor/ConstructorPage';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
 
 export default function App() {
+  const hasShop = useSelector((state: RootState) => !!state.auth.shop);
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="/orders" element={<Orders />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/clients" element={<Clients />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/administrators" element={<Administrators />} />
-          <Route path="/constructor" element={<Constructor />} />
-        </Route>
+        <Route path="/onboarding" element={<OnboardingPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+
+        {hasShop && (
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route index element={<DashboardPage />} />
+            <Route path="orders" element={<OrdersPage />} />
+            <Route path="products" element={<ProductsPage />} />
+            <Route path="customers" element={<CustomersPage />} />
+            <Route path="settings" element={<SettingsPage />} />
+            <Route path="admins" element={<AdminsPage />} />
+            <Route path="constructor" element={<ConstructorPage />} />
+          </Route>
+        )}
+
+        <Route path="*" element={<Navigate to={hasShop ? '/dashboard' : '/onboarding'} />} />
       </Routes>
     </BrowserRouter>
   );

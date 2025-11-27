@@ -1,0 +1,14 @@
+.layout {
+  display: flex;
+}
+
+.main {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
