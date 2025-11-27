@@ -1,0 +1,12 @@
+.button {
+  background-color: var(--color-light-blue);
+  border-radius: var(--border-radius-3);
+  border: none;
+  padding: 11px 16px;
+  font-weight: 700;
+  display: flex;
+  color: var(--color-dark);
+  justify-content: center;
+  align-items: center;
+  box-shadow: var(--box-shadow-4);
+}

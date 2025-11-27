@@ -1,0 +1,31 @@
+.container {
+  border-radius: var(--border-radius-3);
+  background-color: var(--color-light-blue);
+  padding: 13px;
+  width: 250px;
+  box-shadow: var(--box-shadow-2);
+}
+
+.profile {
+  border-radius: var(--border-radius-3);
+  background-color: var(--color-white);
+  padding-top: 13px;
+  padding-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-dark);
+  box-shadow: var(--box-shadow-2);
+}
+
+.image {
+  margin-bottom: 10px;
+}
+
+.name {
+  font-weight: 700;
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 20px;
+}
