@@ -1,0 +1,18 @@
+.container {
+  border-radius: var(--border-radius-3);
+  background-color: var(--color-light-blue);
+  padding: 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 21px;
+  /* width: 250px; */
+  box-shadow: var(--box-shadow-4);
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  margin-right: 20px;
+}

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { setShop } from '../../store/slices/authSlice';
 import type { RootState } from '../../store';
-import ProfileBlock from '../../components/ui/ProfileBlock/ProfileBlock';
+import SettingsBlock from '../../components/ui/SettingsBlock/SettingsBlock';
 
 export default function OnboardingPage() {
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ export default function OnboardingPage() {
     );
   };
 
-  return <ProfileBlock />;
+  return <SettingsBlock />;
 
   //   other elements (buttons)
 }

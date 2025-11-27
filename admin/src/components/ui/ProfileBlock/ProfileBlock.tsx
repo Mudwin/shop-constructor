@@ -10,7 +10,9 @@ export default function ProfileBlock() {
           <ProfileImage />
         </div>
         <div className={styles.name}>Петров Дмитрий Петрович</div>
-        <Button fontSize={18}>Изменить</Button>
+        <Button fontSize={15} color="blue">
+          Изменить
+        </Button>
       </div>
     </div>
   );
