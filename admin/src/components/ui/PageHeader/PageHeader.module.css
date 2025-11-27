@@ -1,0 +1,11 @@
+.header {
+  border-radius: var(--border-radius-2);
+  background-color: var(--color-light-blue);
+  padding: 10px 30px;
+  text-align: center;
+  color: var(--color-dark);
+  font-weight: 700;
+  font-size: 20px;
+  width: fit-content;
+  box-shadow: var(--box-shadow-2);
+}
