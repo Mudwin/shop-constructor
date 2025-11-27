@@ -1,3 +1,3 @@
 export default function CustomersPage() {
-  return 123;
+  return 'customers page';
 }

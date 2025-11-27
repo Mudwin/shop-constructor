@@ -1,3 +1,3 @@
 export default function AdminsPage() {
-  return 123;
+  return 'admings page';
 }

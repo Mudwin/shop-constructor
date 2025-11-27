@@ -16,7 +16,7 @@ export default function OnboardingPage() {
     );
   };
 
-  return 123;
+  return 'onboarding page';
 
   //   other elements (buttons)
 }

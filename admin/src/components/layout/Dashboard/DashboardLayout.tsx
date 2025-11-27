@@ -1,11 +1,11 @@
 import { Outlet } from 'react-router-dom';
-import Navbar from '../Navbar/Navbar';
+import DashboardNavbar from '../DashboardNavbar/DashboardNavbar';
 import styles from './DashboardLayout.module.css';
 
 export default function DashboardLayout() {
   return (
     <div className={styles.layout}>
-      <Navbar />
+      <DashboardNavbar />
       <main className={styles.main}>
         <Outlet />
       </main>

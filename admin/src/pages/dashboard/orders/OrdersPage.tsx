@@ -1,3 +1,3 @@
 export default function OrdersPage() {
-  return 123;
+  return 'orders page';
 }

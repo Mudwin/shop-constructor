@@ -1,3 +1,3 @@
 export default function ProductsPage() {
-  return 123;
+  return 'products page';
 }

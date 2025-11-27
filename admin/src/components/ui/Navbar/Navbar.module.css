@@ -1,0 +1,8 @@
+.nav {
+  width: 280px;
+  height: 100vh;
+  background-color: var(--color-dark);
+  color: var(--color-white);
+  font-weight: 700;
+  padding: 10px;
+}
