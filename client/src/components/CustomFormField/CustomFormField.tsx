@@ -50,7 +50,7 @@ const stylesForInput = {
 };
 
 const stylesForErrorMessage = {
-  color: 'var(--color-red-bright)',
+  color: 'var(--color-red)',
   marginTop: '0px',
   marginLeft: '2px',
   fontWeight: 500,

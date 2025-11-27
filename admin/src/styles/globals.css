@@ -7,24 +7,27 @@
   --color-blue-transparent: #3399ff66;
   --color-teal: #4ca8af;
   --color-light-teal: #a8dadc;
-  --color-light-gray: #e0e5ec;
+  --color-sky: #93c5fd;
+  --color-light-blue: #a7e6ff;
   --color-dark-white: #e6f0fa;
   --color-white: #f0f8ff;
-  --color-red: #f4b6b6;
-  --color-orange: #f8cba6;
+  --color-light-gray: #e0e5ec;
+  --color-light-red: #f4b6b6;
+  --color-light-orange: #f8cba6;
+  --color-light-green: #b7e1a1;
   --color-gray: #9aa3ae;
   --color-cyan: #a8dadc;
-  --color-green: #b7e1a1;
-  --color-red-bright: #e74c3c;
-  --color-yellow-bright: #f1c40f;
-  --color-blue-bright: #3399ff;
-  --color-green-bright: #58d68d;
+  --color-red: #e74c3c;
+  --color-yellow: #f1c40f;
+  --color-green: #58d68d;
 
   --border-radius-1: 8px;
   --border-radius-2: 10px;
-  --border-radius-3: 33px;
-  --border-radius-4: 40px;
-  --border-radius-5: 44px;
+  --border-radius-3: 15px;
+  --border-radius-4: 30px;
+  --border-radius-5: 33px;
+  --border-radius-6: 40px;
+  --border-radius-7: 44px;
 
   --box-shadow-1: 2px 4px 6px rgba(0, 0, 0, 0.25);
   --box-shadow-2: 0px 2px 4px rgba(0, 0, 0, 0.25);
