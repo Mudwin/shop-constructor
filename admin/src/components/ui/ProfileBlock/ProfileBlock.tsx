@@ -11,13 +11,18 @@ export default function ProfileBlock({ from }: ProfileProps) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const getBackPath = () => {
-    const fromDashboard = location.state?.from === 'dashboard';
-
-    return fromDashboard ? '/dashboard' : '/onboarding';
+  const handleButtonClick = () => {
+    if (from === 'profile') {
+      const fromDashboard = location.state?.from === 'dashboard';
+      navigate(fromDashboard ? '/dashboard' : '/onboarding');
+    } else {
+      navigate('/profile', {
+        state: { from: from },
+      });
+    }
   };
 
-  const handleButtonClick = () => navigate(getBackPath());
+  const buttonText = from === 'profile' ? 'Вернуться в панель администратора' : 'Изменить';
 
   return (
     <div className={styles.container}>
@@ -27,7 +32,7 @@ export default function ProfileBlock({ from }: ProfileProps) {
         </div>
         <div className={styles.name}>Петров Дмитрий Петрович</div>
         <Button fontSize={15} color="blue" onClick={handleButtonClick}>
-          {from === 'profile' ? 'Вернуться в панель администратора' : 'Изменить'}
+          {buttonText}
         </Button>
       </div>
     </div>

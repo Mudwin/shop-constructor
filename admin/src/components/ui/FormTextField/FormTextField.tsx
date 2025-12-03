@@ -9,6 +9,8 @@ interface FormTextFieldProps {
   inputType?: string;
   label: string;
   required?: boolean;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 
 export default function FormTextField({
@@ -17,17 +19,19 @@ export default function FormTextField({
   inputType = 'text',
   label,
   required = false,
+  value,
+  onChange,
 }: FormTextFieldProps) {
   return (
     <div className={styles.field}>
-      <FormLabel element={id} required>
+      <FormLabel element={id} required={required}>
         {label}
       </FormLabel>
 
       {type === 'input' ? (
-        <FormInput id={id} type={inputType} required />
+        <FormInput id={id} type={inputType} required={required} value={value} onChange={onChange} />
       ) : (
-        <FormTextarea id={id} required />
+        <FormTextarea id={id} required={required} value={value} onChange={onChange} />
       )}
     </div>
   );

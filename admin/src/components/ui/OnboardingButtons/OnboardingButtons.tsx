@@ -3,12 +3,16 @@ import Button from '../Button/Button';
 import addIcon from '../../../assets/icons/add-icon.svg';
 import joinIcon from '../../../assets/icons/join-icon.svg';
 
-export default function OnboardingButtons() {
+interface OnboardingButtonsProps {
+  onCreateShopClick: () => void;
+}
+
+export default function OnboardingButtons({ onCreateShopClick }: OnboardingButtonsProps) {
   return (
     <div className={styles.container}>
       <h2 className={styles.header}>Создайте свой магазин, либо присоединитесь к существующему</h2>
       <div className={styles.buttons}>
-        <Button fontSize={18} color="blue">
+        <Button fontSize={18} color="blue" onClick={onCreateShopClick}>
           Создать
           <img src={addIcon} className={styles.buttonIcon} />
         </Button>

@@ -22,13 +22,14 @@ export default function OnboardingPage() {
     setCreationStep('step1');
   };
 
-  const handleStep1Complete = (name: string) => {
-    setShopName(name);
+  const handleStep1Complete = () => {
     setCreationStep('step2');
   };
 
   const handleStep2Complete = (/* данные со второго шага */) => {
-    dispatch(setShop({ id: 'new-shop', name: shopName, role: 'owner' }));
+    dispatch(
+      setShop({ id: Date.now().toString(), name: shopName || 'Мой магазин', role: 'owner' })
+    );
 
     navigate('/dashboard');
   };
@@ -38,9 +39,16 @@ export default function OnboardingPage() {
       case 'buttons':
         return <OnboardingButtons onCreateShopClick={handleCreateShopClick} />;
       case 'step1':
-        return <CreateShopForm step="step1" onComplete={handleStep1Complete} />;
+        return (
+          <CreateShopForm
+            step="step1"
+            shopName={shopName}
+            onShopNameChange={setShopName}
+            onComplete={handleStep1Complete}
+          />
+        );
       case 'step2':
-        return <CreateShopForm step="step2" onComplete={handleStep2Complete} />;
+        return <CreateShopForm step="step2" onComplete={handleStep1Complete} />;
       default:
         return <OnboardingButtons onCreateShopClick={handleCreateShopClick} />;
     }

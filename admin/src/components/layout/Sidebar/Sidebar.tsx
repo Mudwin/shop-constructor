@@ -30,12 +30,12 @@ export default function Sidebar({ type }: SidebarProps) {
         <ProfileBlock from="dashboard" />
       </Navbar>
     );
-
-    return (
-      <Navbar>
-        <ProfileBlock from="profile" />
-        <SettingsBlock />
-      </Navbar>
-    );
   }
+
+  return (
+    <Navbar>
+      <ProfileBlock from="profile" />
+      <SettingsBlock />
+    </Navbar>
+  );
 }

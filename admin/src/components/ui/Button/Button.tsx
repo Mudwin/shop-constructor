@@ -10,6 +10,7 @@ interface ButtonProps {
   maxWidth?: boolean;
   justifyStart?: boolean;
   onClick?: () => void;
+  type?: 'button' | 'submit' | 'reset';
 }
 
 const buttonColors: Record<ButtonColor, string> = {
@@ -25,6 +26,7 @@ export default function Button({
   maxWidth = false,
   justifyStart = false,
   onClick,
+  type = 'button',
 }: ButtonProps) {
   return (
     <button
@@ -36,6 +38,7 @@ export default function Button({
       }}
       className={styles.button}
       onClick={onClick}
+      type={type}
     >
       {children}
     </button>
