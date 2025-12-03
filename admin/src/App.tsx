@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import type { RootState } from './store';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
-import OnboardingPage from './pages/onboarding/OnboardingPage';
+import OnboardingPage from './pages/onboarding/OnboardingPage/OnboardingPage';
 import ProfilePage from './pages/profile/ProfilePage';
 import Layout from './components/layout/Layout';
 import DashboardPage from './pages/dashboard/DashboardPage';
@@ -11,7 +11,7 @@ import CustomersPage from './pages/dashboard/customers/CustomersPage';
 import SettingsPage from './pages/dashboard/settings/SettingsPage';
 import AdminsPage from './pages/dashboard/admins/AdminsPage';
 import ConstructorPage from './pages/dashboard/constructor/ConstructorPage';
-import CreateShopForm from './pages/onboarding/CreateShopForm';
+import CreateShopForm from './pages/onboarding/CreateShopForm/CreateShopForm';
 
 export default function App() {
   const hasShop = useSelector((state: RootState) => !!state.auth.shop);

@@ -45,11 +45,16 @@ export default function CreateShopForm({ step, onComplete }: CreateShopFormProps
                 </FormLabel>
                 <div className={styles.agreementsContainer}>
                   <FormAgreement id="confidential">
-                    Я даю согласие на обработку моих персональных данных в соответствии с Политикой
-                    конфиденциальности
+                    Я даю согласие на обработку моих персональных данных в соответствии с{' '}
+                    <a className={styles.agreementLink} href="#">
+                      Политикой конфиденциальности
+                    </a>
                   </FormAgreement>
                   <FormAgreement id="agreement">
-                    Я принимаю условия Пользовательского соглашения
+                    Я принимаю условия{' '}
+                    <a href="" className={styles.agreementLink}>
+                      Пользовательского соглашения
+                    </a>
                   </FormAgreement>
                 </div>
               </div>
