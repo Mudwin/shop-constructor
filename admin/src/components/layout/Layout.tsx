@@ -1,11 +1,15 @@
+import Sidebar from './Sidebar/Sidebar';
 import { Outlet } from 'react-router-dom';
-import Navbar from './DashboardNavbar/Navbar';
 import styles from './Layout.module.css';
 
-export default function Layout() {
+interface LayoutProps {
+  type: 'onboard' | 'dashboard' | 'profile';
+}
+
+export default function Layout({ type }: LayoutProps) {
   return (
     <div className={styles.layout}>
-      <Navbar />
+      <Sidebar type={type} />
       <main className={styles.main}>
         <Outlet />
       </main>

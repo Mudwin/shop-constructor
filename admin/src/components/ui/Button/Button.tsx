@@ -9,6 +9,7 @@ interface ButtonProps {
   color: ButtonColor;
   maxWidth?: boolean;
   justifyStart?: boolean;
+  onClick?: () => void;
 }
 
 const buttonColors: Record<ButtonColor, string> = {
@@ -23,6 +24,7 @@ export default function Button({
   color = 'blue',
   maxWidth = false,
   justifyStart = false,
+  onClick,
 }: ButtonProps) {
   return (
     <button
@@ -33,6 +35,7 @@ export default function Button({
         justifyContent: justifyStart ? 'start' : 'center',
       }}
       className={styles.button}
+      onClick={onClick}
     >
       {children}
     </button>

@@ -8,4 +8,5 @@
   font-size: 20px;
   width: fit-content;
   box-shadow: var(--box-shadow-2);
+  margin-bottom: 20px;
 }

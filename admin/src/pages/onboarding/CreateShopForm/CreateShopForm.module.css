@@ -1,0 +1,53 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-block: 20px;
+  outline: 1px solid green;
+}
+
+.header {
+  font-weight: 700;
+  font-size: 24px;
+  text-align: center;
+  color: var(--color-dark);
+  margin-bottom: 50px;
+  outline: 1px solid red;
+  width: 350px;
+  line-height: 30px;
+}
+
+.form {
+  /* outline: 1px solid red; */
+  width: fit-content;
+  display: flex;
+  gap: 100px;
+  margin-bottom: 70px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  outline: 1px solid blue;
+}
+
+.buttonIcon {
+  width: 20px;
+  margin-left: 15px;
+}
+
+.agreementsContainer {
+  border: 1px solid red;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.step2Container {
+  margin-top: 60px;
+  display: flex;
+  gap: 100px;
+  margin-bottom: 50px;
+}

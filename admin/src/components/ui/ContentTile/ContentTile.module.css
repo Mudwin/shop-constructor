@@ -1,6 +1,6 @@
 .tile {
   background-color: var(--color-white);
   border-radius: var(--border-radius-6);
-  box-shadow: var(--box-shadow-2);
+  box-shadow: var(--box-shadow-4);
   padding: 16px;
 }

@@ -1,0 +1,7 @@
+.navItem {
+  color: green;
+}
+
+.navItem.active {
+  color: red;
+}

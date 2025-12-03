@@ -1,14 +1,21 @@
+::-webkit-scrollbar {
+  display: none;
+}
+
 .layout {
   display: flex;
+  background-color: var(--color-dark-white);
+  height: 100%;
 }
 
 .main {
   flex: 1;
-  padding: 20px;
+  padding: 10px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: start;
   font-size: 20px;
   font-weight: 700;
   letter-spacing: 1px;
+  border: 1px solid blue;
 }
