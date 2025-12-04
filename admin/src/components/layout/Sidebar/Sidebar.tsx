@@ -23,14 +23,18 @@ export default function Sidebar({ type }: SidebarProps) {
   if (type === 'dashboard') {
     return (
       <Navbar>
-        <NavItem to="/dashboard" label="Панель управления" />
-        <NavItem to="/dashboard/orders" label="Заказы" />
-        <NavItem to="/dashboard/products" label="Товары" />
-        <NavItem to="/dashboard/customers" label="Клиенты" />
-        <NavItem to="/dashboard/settings" label="Настройки" />
-        <NavItem to="/dashboard/admins" label="Администраторы" />
-        <NavItem to="/dashboard/constructor" label="Конструктор" />
-        <ProfileBlock from="dashboard" />
+        <div className={styles.dashboardSidebar}>
+          <div className={styles.navItems}>
+            <NavItem to="/dashboard" label="Панель управления" end={true} />
+            <NavItem to="/dashboard/orders" label="Заказы" />
+            <NavItem to="/dashboard/products" label="Товары" />
+            <NavItem to="/dashboard/customers" label="Клиенты" />
+            <NavItem to="/dashboard/settings" label="Настройки" />
+            <NavItem to="/dashboard/admins" label="Администраторы" />
+            <NavItem to="/dashboard/constructor" label="Конструктор" />
+          </div>
+          <ProfileBlock from="dashboard" />
+        </div>
       </Navbar>
     );
   }

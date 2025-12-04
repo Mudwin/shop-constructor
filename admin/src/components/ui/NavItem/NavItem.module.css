@@ -1,7 +1,17 @@
 .navItem {
-  color: green;
+  color: var(--color-white);
+  font-weight: 700;
+  font-size: 17px;
+  text-decoration: none;
+  padding-block: 5px;
+  padding-inline: 12px;
 }
 
 .navItem.active {
-  color: red;
+  color: var(--color-dark);
+  background-color: var(--color-light-blue);
+  padding-block: 5px;
+  padding-inline: 12px;
+  border-radius: var(--border-radius-2);
+  box-shadow: var(--box-shadow-4);
 }
