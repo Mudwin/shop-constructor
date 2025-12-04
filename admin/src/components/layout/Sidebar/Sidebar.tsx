@@ -1,3 +1,4 @@
+import styles from './Sidebar.module.css';
 import Navbar from '../../ui/Navbar/Navbar';
 import ProfileBlock from '../../ui/ProfileBlock/ProfileBlock';
 import SettingsBlock from '../../ui/SettingsBlock/SettingsBlock';
@@ -11,8 +12,10 @@ export default function Sidebar({ type }: SidebarProps) {
   if (type === 'onboard') {
     return (
       <Navbar>
-        <ProfileBlock from="onboard" />
-        <SettingsBlock />
+        <div className={styles.onboardSidebar}>
+          <ProfileBlock from="onboard" />
+          <SettingsBlock />
+        </div>
       </Navbar>
     );
   }
@@ -34,8 +37,10 @@ export default function Sidebar({ type }: SidebarProps) {
 
   return (
     <Navbar>
-      <ProfileBlock from="profile" />
-      <SettingsBlock />
+      <div className={styles.onboardSidebar}>
+        <ProfileBlock from="profile" />
+        <SettingsBlock />
+      </div>
     </Navbar>
   );
 }

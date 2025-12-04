@@ -7,15 +7,15 @@ import questionIcon from '../../../assets/icons/question-icon.svg';
 export default function SettingsBlock() {
   return (
     <div className={styles.container}>
-      <Button fontSize={15} color="white" maxWidth justifyStart>
+      <Button fontSize={13} color="white" maxWidth justifyStart paddingBlock="10">
         <img className={styles.icon} src={settingsIcon}></img>
         Настройки
       </Button>
-      <Button fontSize={15} color="white" maxWidth justifyStart>
+      <Button fontSize={13} color="white" maxWidth justifyStart paddingBlock="10">
         <img className={styles.icon} src={questionIcon}></img>
         Помощь
       </Button>
-      <Button fontSize={15} color="white" maxWidth justifyStart>
+      <Button fontSize={13} color="white" maxWidth justifyStart paddingBlock="10">
         <img className={styles.icon} src={logoutIcon}></img>
         Выход
       </Button>

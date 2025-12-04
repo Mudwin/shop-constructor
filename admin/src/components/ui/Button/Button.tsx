@@ -9,6 +9,8 @@ interface ButtonProps {
   color: ButtonColor;
   maxWidth?: boolean;
   justifyStart?: boolean;
+  paddingInline?: string;
+  paddingBlock?: string;
   onClick?: () => void;
   type?: 'button' | 'submit' | 'reset';
 }
@@ -25,6 +27,8 @@ export default function Button({
   color = 'blue',
   maxWidth = false,
   justifyStart = false,
+  paddingInline,
+  paddingBlock,
   onClick,
   type = 'button',
 }: ButtonProps) {
@@ -35,6 +39,8 @@ export default function Button({
         backgroundColor: buttonColors[color],
         width: maxWidth ? '100%' : '',
         justifyContent: justifyStart ? 'start' : 'center',
+        paddingBlock: `${paddingBlock}px`,
+        paddingInline: `${paddingInline}px`,
       }}
       className={styles.button}
       onClick={onClick}

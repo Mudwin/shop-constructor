@@ -22,8 +22,6 @@ export default function ProfileBlock({ from }: ProfileProps) {
     }
   };
 
-  const buttonText = from === 'profile' ? 'Вернуться в панель администратора' : 'Изменить';
-
   return (
     <div className={styles.container}>
       <div className={styles.profile}>
@@ -31,9 +29,28 @@ export default function ProfileBlock({ from }: ProfileProps) {
           <ProfileImage />
         </div>
         <div className={styles.name}>Петров Дмитрий Петрович</div>
-        <Button fontSize={15} color="blue" onClick={handleButtonClick}>
-          {buttonText}
-        </Button>
+
+        {from === 'profile' ? (
+          <Button
+            fontSize={12}
+            color="blue"
+            onClick={handleButtonClick}
+            paddingBlock="5"
+            paddingInline="0"
+          >
+            Вернуться в панель администратора
+          </Button>
+        ) : (
+          <Button
+            fontSize={13}
+            color="blue"
+            onClick={handleButtonClick}
+            paddingBlock="6"
+            paddingInline="20"
+          >
+            Изменить
+          </Button>
+        )}
       </div>
     </div>
   );
