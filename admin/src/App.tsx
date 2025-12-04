@@ -4,14 +4,16 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
 import OnboardingPage from './pages/onboarding/OnboardingPage/OnboardingPage';
 import ProfilePage from './pages/profile/ProfilePage';
 import Layout from './components/layout/Layout';
-import DashboardPage from './pages/dashboard/DashboardPage';
-import OrdersPage from './pages/dashboard/orders/OrdersPage';
-import ProductsPage from './pages/dashboard/products/ProductsPage';
-import CustomersPage from './pages/dashboard/customers/CustomersPage';
-import SettingsPage from './pages/dashboard/settings/SettingsPage';
-import AdminsPage from './pages/dashboard/admins/AdminsPage';
-import ConstructorPage from './pages/dashboard/constructor/ConstructorPage';
+import DashboardPage from './pages/dashboard/DashboardPage/DashboardPage';
+import OrdersPage from './pages/dashboard/OrdersPage/OrdersPage';
+import ProductsPage from './pages/dashboard/ProductsPage/ProductsPage';
+import CustomersPage from './pages/dashboard/CustomersPage/CustomersPage';
+import SettingsPage from './pages/dashboard/SettingsPage/SettingsPage';
+import AdminsPage from './pages/dashboard/AdminsPage/AdminsPage';
+import ConstructorPage from './pages/dashboard/ConstructorPage/ConstructorPage';
 import CreateShopForm from './pages/onboarding/CreateShopForm/CreateShopForm';
+import AppSettingsPage from './pages/settings/AppSettingsPage';
+import HelpPage from './pages/help/HelpPage';
 
 export default function App() {
   const hasShop = useSelector((state: RootState) => !!state.auth.shop);
@@ -22,6 +24,12 @@ export default function App() {
         {/* Общие роуты */}
         <Route path="/profile" element={<Layout type="profile"></Layout>}>
           <Route index element={<ProfilePage />} />
+        </Route>
+        <Route path="/settings" element={<Layout type="profile" />}>
+          <Route index element={<AppSettingsPage />} />
+        </Route>
+        <Route path="/help" element={<Layout type="profile" />}>
+          <Route index element={<HelpPage />} />
         </Route>
 
         {/* Pre-shop роуты */}

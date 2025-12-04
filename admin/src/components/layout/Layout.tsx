@@ -10,9 +10,18 @@ export default function Layout({ type }: LayoutProps) {
   return (
     <div className={styles.layout}>
       <Sidebar type={type} />
-      <main className={styles.main}>
-        <Outlet />
-      </main>
+
+      {/* временно */}
+
+      {type === 'onboard' ? (
+        <main className={styles.main}>
+          <Outlet />
+        </main>
+      ) : (
+        <main className={styles.main} style={{ alignItems: 'center' }}>
+          <Outlet />
+        </main>
+      )}
     </div>
   );
 }
