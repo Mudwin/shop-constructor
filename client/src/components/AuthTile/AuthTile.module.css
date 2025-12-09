@@ -1,5 +1,6 @@
 .tile {
   background-color: var(--color-white);
+  box-shadow: var(--box-shadow-4);
   border-radius: 33px;
   display: flex;
   flex-direction: column;

@@ -6,7 +6,7 @@ import CustomForm from '../../../src/components/CustomForm/CustomForm';
 export default function ConfirmCodePage() {
   const handleSubmit = (event: any) => {
     console.log(event.target);
-    window.location.href = 'https://localhost:5173/';
+    window.location.href = 'http://localhost:5173/';
   };
 
   return (

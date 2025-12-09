@@ -13,12 +13,12 @@ interface CustomButtonProps {
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
   fontSize?: number;
+  paddingInline?: number;
 }
 
 const styles = {
   color: 'var(--color-dark)',
-  padding: '6px 12px',
-  // fontSize: '20px',
+  paddingBlock: '6px',
   fontWeight: '600',
   textTransform: 'none',
   borderRadius: '10px',
@@ -43,10 +43,12 @@ export default function CustomButton({
   type = 'button',
   disabled = false,
   fontSize = 15,
+  paddingInline,
 }: CustomButtonProps) {
   const buttonStyles = {
     backgroundColor: backgroundColors[buttonType],
     fontSize: `${fontSize}px`,
+    paddingInline: `${paddingInline}px`,
     ...styles,
   };
 

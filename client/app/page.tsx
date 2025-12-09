@@ -7,7 +7,7 @@ export default function HomePage() {
   return (
     <div className={styles.container}>
       <div className={styles['buttons-container']}>
-        <CustomButton fontSize={30} type="button" href="/auth/login">
+        <CustomButton fontSize={30} paddingInline={35} type="button" href="/auth/login">
           Вход
         </CustomButton>
       </div>
