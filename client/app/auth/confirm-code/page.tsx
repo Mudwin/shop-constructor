@@ -1,15 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import CustomFormField from '../../../src/components/CustomFormField/CustomFormField';
 import CustomForm from '../../../src/components/CustomForm/CustomForm';
-import { useAuth } from '../../../src/contexts/AuthContext';
+import { api } from '../../../src/lib/api';
 
 export default function ConfirmCodePage() {
   const searchParams = useSearchParams();
-  const router = useRouter();
-  const { login } = useAuth();
   const [error, setError] = useState('');
 
   const email = searchParams.get('email');
@@ -22,9 +20,9 @@ export default function ConfirmCodePage() {
 
     try {
       setError('');
-      await login(email, data.code);
+      const response = await api.confirmOTP(email, data.code);
 
-      router.push('/profile');
+      window.location.href = `http://localhost:5173/auth-callback?token=${response.access_token}&user_id=${response.user_id}&email=${encodeURIComponent(response.email)}`;
     } catch (error: any) {
       setError(error.message || 'Неверный код или ошибка ввода');
     }
