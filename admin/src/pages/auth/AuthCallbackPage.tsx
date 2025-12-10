@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useDispatch, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { setToken, setUser } from '../../store/slices/authSlice';
 import { api } from '../../api';
@@ -42,7 +42,7 @@ export default function AuthCallbackPage() {
 
         if (shops.length > 0) {
           dispatch(
-            api.setShop({
+            setShop({
               id: String(shops[0].id),
               name: shops[0].name,
               role: 'owner',

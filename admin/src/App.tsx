@@ -1,5 +1,7 @@
-import { useSelector } from 'react-redux';
-import type { RootState } from './store';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import type { RootState, AppDispatch } from './store';
+import { initializeAuth } from './store/slices/authSlice';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
 import OnboardingPage from './pages/onboarding/OnboardingPage/OnboardingPage';
 import ProfilePage from './pages/profile/ProfilePage';
@@ -14,15 +16,29 @@ import ConstructorPage from './pages/dashboard/ConstructorPage/ConstructorPage';
 import CreateShopForm from './pages/onboarding/CreateShopForm/CreateShopForm';
 import AppSettingsPage from './pages/settings/AppSettingsPage';
 import HelpPage from './pages/help/HelpPage';
+import AuthCallbackPage from './pages/auth/AuthCallbackPage';
 
 export default function App() {
+  const dispatch = useDispatch<AppDispatch>();
   const hasShop = useSelector((state: RootState) => !!state.auth.shop);
+  const isInitialized = useSelector((state: RootState) => state.auth.user.id !== null);
+
+  useEffect(() => {
+    dispatch(initializeAuth());
+  }, [dispatch]);
+
+  if (!isInitialized) {
+    return <div>Загрузка...</div>;
+  }
 
   return (
     <BrowserRouter>
       <Routes>
+        {/* Роут для обработки callback из регистрации из клиента */}
+        <Route path="/auth-callback" element={<AuthCallbackPage />} />
+
         {/* Общие роуты */}
-        <Route path="/profile" element={<Layout type="profile"></Layout>}>
+        <Route path="/profile" element={<Layout type="profile" />}>
           <Route index element={<ProfilePage />} />
         </Route>
         <Route path="/settings" element={<Layout type="profile" />}>
