@@ -5,7 +5,7 @@ import logoutIcon from '../../../assets/icons/logout-icon.svg';
 import settingsIcon from '../../../assets/icons/settings-icon.svg';
 import questionIcon from '../../../assets/icons/question-icon.svg';
 
-export default function SettingsBlock() {
+export default function SettingsBlock({ handleLogout }: { handleLogout: () => void }) {
   const navigate = useNavigate();
 
   const handleSettingsClick = () => {
@@ -14,11 +14,6 @@ export default function SettingsBlock() {
 
   const handleHelpClick = () => {
     navigate('/help');
-  };
-
-  const handleLogoutClick = () => {
-    // реализовать выход
-    window.location.href = 'http://localhost:3000/';
   };
 
   return (
@@ -51,7 +46,7 @@ export default function SettingsBlock() {
         maxWidth
         justifyStart
         paddingBlock="10"
-        onClick={handleLogoutClick}
+        onClick={handleLogout}
       >
         <img className={styles.icon} src={logoutIcon}></img>
         Выход

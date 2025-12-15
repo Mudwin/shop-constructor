@@ -1,8 +1,9 @@
 import type { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { setShop } from '../../../store/slices/authSlice';
+import { api } from '../../../api';
 import styles from './CreateShopForm.module.css';
 import FormTextField from '../../../components/ui/FormTextField/FormTextField';
 import Button from '../../../components/ui/Button/Button';
@@ -22,6 +23,14 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    join_password: '',
+  });
+
   const [shopName, setShopName] = useState('');
   const [description, setDescription] = useState('');
   const [domain, setDomain] = useState('');
@@ -29,22 +38,35 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
   const [country, setCountry] = useState('');
   const [code, setCode] = useState('');
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setError('');
 
-    if (step === 'step1') {
-      navigate('/onboarding/step2');
-    } else if (step === 'step2') {
+    try {
+      const shop = await api.createShop(formData);
+
       dispatch(
         setShop({
-          id: Date.now().toString(),
-          name: shopName,
+          id: String(shop.id),
+          name: shop.name,
           role: 'owner',
         })
       );
 
       navigate('/dashboard');
+    } catch (error: any) {
+      setError(error.message || 'Ошибка создания магазина');
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
   return (

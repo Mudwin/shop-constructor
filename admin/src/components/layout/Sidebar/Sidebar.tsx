@@ -3,18 +3,29 @@ import Navbar from '../../ui/Navbar/Navbar';
 import ProfileBlock from '../../ui/ProfileBlock/ProfileBlock';
 import SettingsBlock from '../../ui/SettingsBlock/SettingsBlock';
 import NavItem from '../../ui/NavItem/NavItem';
+import { useDispatch } from 'react-redux';
+import { clearAuth } from '../../../store/slices/authSlice';
+import { api } from '../../../api';
 
 interface SidebarProps {
   type: 'onboard' | 'dashboard' | 'profile';
 }
 
 export default function Sidebar({ type }: SidebarProps) {
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(clearAuth());
+    api.clearToken();
+    window.location.href = 'http://localhost:3000/auth/login';
+  };
+
   if (type === 'onboard') {
     return (
       <Navbar>
         <div className={styles.onboardSidebar}>
           <ProfileBlock from="onboard" />
-          <SettingsBlock />
+          <SettingsBlock handleLogout={handleLogout} />
         </div>
       </Navbar>
     );
@@ -43,7 +54,7 @@ export default function Sidebar({ type }: SidebarProps) {
     <Navbar>
       <div className={styles.onboardSidebar}>
         <ProfileBlock from="profile" />
-        <SettingsBlock />
+        <SettingsBlock handleLogout={handleLogout} />
       </div>
     </Navbar>
   );

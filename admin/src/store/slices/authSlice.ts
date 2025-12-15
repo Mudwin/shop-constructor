@@ -1,9 +1,34 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { api } from '../../api';
 
-export const initializeAuth = createAsyncThunk('auth/initialize', async (_, { dispatch }) => {
-  const token = localStorage.getItem('access_token');
+interface AuthState {
+  user: {
+    id: string | null;
+    email: string | null;
+    profile: {
+      firstName?: string;
+      lastName?: string;
+      phone?: string;
+    } | null;
+  };
+  shop: {
+    id: string | null;
+    name: string | null;
+    role: 'owner' | 'viewer' | null;
+  } | null;
+}
 
+const initialState: AuthState = {
+  user: {
+    id: null,
+    email: null,
+    profile: null,
+  },
+  shop: null,
+};
+
+export const initializeAuth = createAsyncThunk('auth/initialize', async () => {
+  const token = localStorage.getItem('access_token');
   if (!token) {
     return null;
   }
@@ -38,11 +63,31 @@ export const initializeAuth = createAsyncThunk('auth/initialize', async (_, { di
   }
 });
 
-extraReducers: (builder) => {
-  builder.addCase(initializeAuth.fulfilled, (state, action) => {
-    if (action.payload) {
-      state.user = action.payload.user;
-      state.shop = action.payload.shop;
-    }
-  });
-};
+const authSlice = createSlice({
+  name: 'auth',
+  initialState,
+  reducers: {
+    setUser: (state, action: PayloadAction<AuthState['user']>) => {
+      state.user = action.payload;
+    },
+    setShop: (state, action: PayloadAction<AuthState['shop']>) => {
+      state.shop = action.payload;
+    },
+    clearAuth: (state) => {
+      state.user = initialState.user;
+      state.shop = initialState.shop;
+      localStorage.removeItem('access_token');
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(initializeAuth.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.user = action.payload.user;
+        state.shop = action.payload.shop;
+      }
+    });
+  },
+});
+
+export const { setUser, setShop, clearAuth } = authSlice.actions;
+export default authSlice.reducer;

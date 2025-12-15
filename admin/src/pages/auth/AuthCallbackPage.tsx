@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { setToken, setUser } from '../../store/slices/authSlice';
+import { setUser, setShop } from '../../store/slices/authSlice';
 import { api } from '../../api';
 
 export default function AuthCallbackPage() {
@@ -21,7 +21,6 @@ export default function AuthCallbackPage() {
       }
 
       try {
-        dispatch(setToken(token));
         api.setToken(token);
 
         const profile = await api.getProfile();
