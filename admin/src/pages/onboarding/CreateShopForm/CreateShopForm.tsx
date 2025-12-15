@@ -29,21 +29,39 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
     name: '',
     description: '',
     join_password: '',
+    domain: '',
+    email: '',
+    country: '',
   });
 
-  const [shopName, setShopName] = useState('');
-  const [description, setDescription] = useState('');
-  const [domain, setDomain] = useState('');
-  const [email, setEmail] = useState('');
-  const [country, setCountry] = useState('');
-  const [code, setCode] = useState('');
+  const [agreementConfidential, setAgreementConfidential] = useState(false);
+  const [agreementTerms, setAgreementTerms] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    if (step === 'step1') {
+      navigate('/onboarding/step2');
+      return;
+    }
+
+    if (step === 'step2') {
+      if (!agreementConfidential || !agreementTerms) {
+        setError('Необходимо принять все соглашения');
+        return;
+      }
+    }
+
     setLoading(true);
     setError('');
 
     try {
+      const shopData = {
+        name: formData.name,
+        description: formData.description || undefined,
+        join_password: formData.join_password,
+      };
+
       const shop = await api.createShop(formData);
 
       dispatch(
@@ -65,7 +83,7 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name || e.target.id]: e.target.value,
     });
   };
 
@@ -75,54 +93,68 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
       <ContentTile width="1100" height="600">
         <div className={styles.formContainer}>
           <h2 className={styles.header}>Чтобы создать магазин, заполните поля ниже</h2>
+
+          {/* Добавить отображение ошибки */}
+
           <form className={styles.form} onSubmit={handleSubmit}>
             {step === 'step1' && (
               <div className={styles.formColumns}>
                 <div className={styles.column}>
                   <FormTextField
-                    id="title"
+                    id="name"
+                    name="name"
                     type="input"
                     label="Название магазина"
-                    value={shopName || ''}
-                    onChange={(e) => setShopName(e.target.value)}
+                    value={formData.name}
+                    onChange={handleChange}
                     required
                   />
                   <FormTextField
                     id="description"
+                    name="description"
                     type="textarea"
                     label="Описание магазина"
-                    value={description || ''}
-                    onChange={(e) => setDescription(e.target.value)}
+                    value={formData.description}
+                    onChange={handleChange}
                   />
                 </div>
                 <div className={styles.column}>
                   <FormTextField
                     id="domain"
+                    name="domain"
                     type="input"
                     label="Адрес сайта (домен)"
-                    value={domain || ''}
-                    onChange={(e) => setDomain(e.target.value)}
+                    value={formData.domain}
+                    onChange={handleChange}
+                    placeholder="example-shop.ru"
                   />
                   <FormTextField
                     id="email"
-                    type="input"
+                    name="email"
+                    type="email"
                     label="Контактный Email"
-                    value={email || ''}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="shop@example.com"
                   />
                   <FormTextField
                     id="country"
+                    name="country"
                     type="input"
                     label="Страна"
-                    value={country || ''}
-                    onChange={(e) => setCountry(e.target.value)}
+                    value={formData.country}
+                    onChange={handleChange}
+                    placeholder="Россия"
                   />
                   <FormTextField
-                    id="code"
-                    type="input"
-                    label="Код"
-                    value={code || ''}
-                    onChange={(e) => setCode(e.target.value)}
+                    id="join_password"
+                    name="join_password"
+                    type="password"
+                    label="Пароль для присоединения"
+                    value={formData.join_password}
+                    onChange={handleChange}
+                    required
+                    placeholder="Минимум 8 символов"
                   />
                 </div>
               </div>
@@ -140,13 +172,21 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
                       Согласия и условия
                     </FormLabel>
                     <div className={styles.agreementsContainer}>
-                      <FormAgreement id="confidential">
+                      <FormAgreement
+                        id="confidential"
+                        checked={agreementConfidential}
+                        onChange={(e: any) => setAgreementConfidential(e.target.checked)}
+                      >
                         Я даю согласие на обработку моих персональных данных в соответствии с
                         <a className={styles.agreementLink} href="#">
                           Политикой конфиденциальности
                         </a>
                       </FormAgreement>
-                      <FormAgreement id="agreement">
+                      <FormAgreement
+                        id="agreement"
+                        checked={agreementTerms}
+                        onChange={(e: any) => setAgreementTerms(e.target.checked)}
+                      >
                         Я принимаю условия
                         <a href="" className={styles.agreementLink}>
                           Пользовательского соглашения
@@ -158,15 +198,17 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
               </>
             )}
 
+            {/* Добавить превью данных из предыдущего шага */}
+
             {step === 'step1' ? (
-              <Button type="submit" fontSize={15} color="blue">
+              <Button type="submit" fontSize={15} color="blue" disabled={loading}>
                 Далее
-                <img src={nextIcon} className={styles.buttonIcon} />
+                <img src={nextIcon} className={styles.buttonIcon} alt="" />
               </Button>
             ) : (
-              <Button type="submit" fontSize={15} color="blue">
-                Создать
-                <img src={finishIcon} className={styles.buttonIcon} />
+              <Button type="submit" fontSize={15} color="blue" disabled={loading}>
+                {loading ? 'Создание...' : 'Создать'}
+                <img src={finishIcon} className={styles.buttonIcon} alt="" />
               </Button>
             )}
           </form>

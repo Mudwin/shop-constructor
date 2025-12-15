@@ -4,14 +4,25 @@ interface FormTextareaProps {
   id: string;
   required?: boolean;
   value?: string;
+  name?: string;
+  placeholder?: string;
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-export default function FormTextarea({ id, required = false, value, onChange }: FormTextareaProps) {
+export default function FormTextarea({
+  id,
+  name,
+  required = false,
+  value,
+  placeholder,
+  onChange,
+}: FormTextareaProps) {
   return (
     <textarea
       className={styles.textarea}
       id={id}
+      name={name}
+      placeholder={placeholder}
       required={required}
       value={value || ''}
       onChange={onChange}

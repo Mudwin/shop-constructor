@@ -9,6 +9,7 @@ interface ButtonProps {
   color: ButtonColor;
   maxWidth?: boolean;
   justifyStart?: boolean;
+  disabled?: boolean;
   paddingInline?: string;
   paddingBlock?: string;
   onClick?: () => void;
@@ -28,6 +29,7 @@ export default function Button({
   maxWidth = false,
   justifyStart = false,
   paddingInline,
+  disabled = false,
   paddingBlock,
   onClick,
   type = 'button',
@@ -44,6 +46,7 @@ export default function Button({
       }}
       className={styles.button}
       onClick={onClick}
+      disabled={disabled}
       type={type}
     >
       {children}

@@ -5,11 +5,13 @@ import FormTextarea from '../FormTextarea/FormTextarea';
 
 interface FormTextFieldProps {
   id: string;
-  type: 'input' | 'textarea';
+  type: 'input' | 'textarea' | 'email' | 'password';
   inputType?: string;
   label: string;
+  name?: string;
   required?: boolean;
   value?: string;
+  placeholder?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 
@@ -18,9 +20,11 @@ export default function FormTextField({
   type,
   inputType = 'text',
   label,
+  name,
   required = false,
   value,
   onChange,
+  placeholder,
 }: FormTextFieldProps) {
   return (
     <div className={styles.field}>
@@ -29,9 +33,24 @@ export default function FormTextField({
       </FormLabel>
 
       {type === 'input' ? (
-        <FormInput id={id} type={inputType} required={required} value={value} onChange={onChange} />
+        <FormInput
+          name={name}
+          id={id}
+          type={inputType}
+          required={required}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+        />
       ) : (
-        <FormTextarea id={id} required={required} value={value} onChange={onChange} />
+        <FormTextarea
+          name={name}
+          id={id}
+          required={required}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+        />
       )}
     </div>
   );
