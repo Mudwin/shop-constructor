@@ -1,0 +1,47 @@
+.container {
+  border: 1px solid red;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.searchContainer {
+  width: 90%;
+  margin-bottom: 20px;
+}
+
+.searchContentContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 10px;
+}
+
+.searchIcon {
+  width: 20px;
+  cursor: pointer;
+}
+
+.inputContainer {
+  margin-left: 20px;
+  margin-right: 25px;
+}
+
+.parametersIcon {
+  width: 20px;
+  margin-right: 25px;
+}
+.selectContainer {
+  margin-right: 20px;
+}
+
+.sortIconContainer {
+  width: 25px;
+}
+
+.ordersContainer {
+  width: 90%;
+  height: 500px;
+}
