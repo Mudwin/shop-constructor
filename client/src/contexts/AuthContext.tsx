@@ -2,7 +2,6 @@
 
 import { createContext, useContext, useState, useEffect } from 'react';
 import { api } from '../lib/api';
-import { setDefaultResultOrder } from 'dns';
 
 interface User {
   id: number;
@@ -76,9 +75,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider
-      value={{ user, isLoading, login, logout, updateUser }}
-    ></AuthContext.Provider>
+    <AuthContext.Provider value={{ user, isLoading, login, logout, updateUser }}>
+      {children}
+    </AuthContext.Provider>
   );
 }
 

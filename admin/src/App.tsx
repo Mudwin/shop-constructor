@@ -24,14 +24,6 @@ export default function App() {
   const isInitialized = useSelector((state: RootState) => state.auth.user.id !== null);
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
-
-    if (!token) {
-      window.location.href = 'http://localhost:3000/auth/login';
-    }
-  }, []);
-
-  useEffect(() => {
     dispatch(initializeAuth());
   }, [dispatch]);
 
