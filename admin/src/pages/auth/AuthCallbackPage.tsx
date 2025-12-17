@@ -11,7 +11,6 @@ export default function AuthCallbackPage() {
       try {
         console.log('🚀 AuthCallbackPage: Начало обработки');
 
-        // Получаем параметры из URL
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get('token');
         const userId = urlParams.get('user_id');
@@ -26,23 +25,19 @@ export default function AuthCallbackPage() {
           return;
         }
 
-        // Сохраняем токен
         console.log('💾 Сохраняем токен...');
         api.setToken(token);
         localStorage.setItem('access_token', token);
         console.log('✅ Токен сохранен');
 
-        // Получаем профиль пользователя
         console.log('👤 Получаем профиль...');
         const profile = await api.getProfile();
         console.log('✅ Профиль получен:', profile);
 
-        // Получаем магазины пользователя
         console.log('🏪 Получаем магазины...');
         const shops = await api.getMyShops();
         console.log('✅ Магазины получены:', shops);
 
-        // Перенаправляем в зависимости от наличия магазинов
         if (shops && shops.length > 0) {
           console.log('📦 У пользователя есть магазин, перенаправляем в /dashboard');
           navigate('/dashboard');

@@ -1,7 +1,7 @@
 import styles from './ContentTile.module.css';
 
 interface ContentTileProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   width?: string;
   height?: string;
 }

@@ -1,0 +1,46 @@
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stats {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 280px;
+  row-gap: 30px;
+  column-gap: 70px;
+}
+
+.statsItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.statsHeader {
+  font-weight: 700;
+  color: var(--color-dark);
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.tile {
+  width: 80%;
+  height: 70%;
+}
+
+.smallTile {
+  width: 80%;
+  height: 80px;
+  margin-bottom: 20px;
+}
+
+.priceTile {
+  width: 30%;
+  height: 50px;
+}
