@@ -10,8 +10,8 @@ interface ButtonProps {
   maxWidth?: boolean;
   justifyStart?: boolean;
   disabled?: boolean;
-  paddingInline?: string;
-  paddingBlock?: string;
+  paddingInline?: number;
+  paddingBlock?: number;
   onClick?: () => void;
   type?: 'button' | 'submit' | 'reset';
 }

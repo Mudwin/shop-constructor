@@ -42,7 +42,8 @@
 
 .productsContainer {
   width: 90%;
-  height: 500px;
+  height: 450px;
+  margin-bottom: 20px;
 }
 
 .productsContentContainer {
@@ -99,10 +100,6 @@
 
 .header[data-amount] {
   margin-right: 90px;
-}
-
-.header[data-status] {
-  /* margin-right: 50px; */
 }
 
 .headersUnderline {

@@ -9,6 +9,7 @@ import sortIcon from '../../../assets/icons/sort-icon.svg';
 import gridIcon from '../../../assets/icons/grid-icon.svg';
 import updateIcon from '../../../assets/icons/update-icon.svg';
 import AdminListItem from '../../../components/ui/AdminListItem/AdminListItem';
+import Button from '../../../components/ui/Button/Button';
 
 export default function ProductsPage() {
   return (
@@ -119,6 +120,9 @@ export default function ProductsPage() {
           </div>
         </ContentTile>
       </div>
+      <Button fontSize={14} color="blue" paddingBlock={8} paddingInline={30}>
+        Добавить товар
+      </Button>
     </div>
   );
 }
