@@ -1,5 +1,4 @@
 .container {
-  border: 1px solid red;
   width: 100%;
   height: 100%;
   display: flex;
@@ -44,4 +43,74 @@
 .ordersContainer {
   width: 90%;
   height: 500px;
+}
+
+.ordersContentContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.ordersListButtonsContainer {
+  align-self: flex-end;
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.ordersListButton {
+  width: 25px;
+  cursor: pointer;
+}
+
+.ordersListHeaders {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin-bottom: 15px;
+}
+
+.headersContainer {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.header {
+  font-size: 14px;
+}
+
+.header[data-id] {
+  margin-left: 35px;
+  margin-right: 135px;
+}
+
+.header[data-client] {
+  margin-right: 180px;
+}
+
+.header[data-date] {
+  margin-right: 125px;
+}
+
+.header[data-sum] {
+  margin-right: 200px;
+}
+
+.header[data-status] {
+  margin-right: 50px;
+}
+
+.headersUnderline {
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-dark);
+}
+
+.ordersList {
+  width: 90%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }

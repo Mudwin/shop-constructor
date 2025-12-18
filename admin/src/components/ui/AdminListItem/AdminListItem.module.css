@@ -1,0 +1,59 @@
+.item {
+  display: flex;
+  align-items: center;
+  border-radius: var(--border-radius-6);
+  padding-inline: 8px;
+  padding-block: 8px;
+  box-shadow: var(--box-shadow-5);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.tile {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: var(--border-radius-7);
+  padding-block: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.order {
+  /*  */
+}
+
+.orderId {
+  width: 80px;
+  margin-right: 25px;
+}
+
+.orderClient {
+  width: 210px;
+  margin-right: 25px;
+}
+
+.orderDate {
+  width: 190px;
+  margin-right: 25px;
+}
+
+.orderDate span {
+  display: inline-block;
+  margin-right: 45px;
+}
+
+.orderSum {
+  width: 100px;
+  margin-right: auto;
+}
+
+.orderEdit {
+  width: 25px;
+  cursor: pointer;
+}
+
+.orderStatus {
+  width: 130px;
+  margin-left: 30px;
+  margin-right: 35px;
+}
