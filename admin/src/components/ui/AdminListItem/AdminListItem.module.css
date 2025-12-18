@@ -83,3 +83,27 @@
   margin-left: 20px;
   margin-right: 20px;
 }
+
+.customer {
+  background-color: var(--color-cyan);
+}
+
+.customerName {
+  width: 270px;
+  margin-right: 15px;
+}
+
+.customerEmail {
+  width: 240px;
+  margin-right: 15px;
+}
+
+.customerAverageMoney {
+  width: 100px;
+  margin-right: 30px;
+}
+
+.customerStatus {
+  width: 120px;
+  margin-left: 20px;
+}

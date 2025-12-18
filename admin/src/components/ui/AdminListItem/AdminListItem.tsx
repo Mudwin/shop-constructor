@@ -43,6 +43,11 @@ const productBackgroundColor: Record<ProductStatus, string> = {
   ['Снят с продажи']: 'var(--color-light-red)',
 };
 
+const customerStatusBackgroundColor: Record<CustomerStatus, string> = {
+  ['Новый']: 'var(--color-light-red)',
+  ['Активный']: 'var(--color-light-green)',
+};
+
 export default function AdminListItem({
   type,
   id,
@@ -97,6 +102,31 @@ export default function AdminListItem({
           <img src={editIcon} alt="" />
         </div>
         <div className={`${styles.tile} ${styles.productStatus}`}>{productStatus}</div>
+      </div>
+    );
+  }
+
+  if (type === 'customer') {
+    return (
+      <div className={`${styles.item} ${styles.customer}`}>
+        <div className={`${styles.tile} ${styles.id}`}>{`#${id}`}</div>
+        <div className={`${styles.tile} ${styles.customerName}`}>{name}</div>
+        <div className={`${styles.tile} ${styles.customerEmail}`}>{email}</div>
+        <div className={`${styles.tile} ${styles.customerAverageMoney}`}>
+          {`${averageMoney} р.`}
+        </div>
+        <div className={styles.orderEdit}>
+          <img src={editIcon} alt="" />
+        </div>
+        <div
+          className={`${styles.tile} ${styles.customerStatus}`}
+          style={{
+            backgroundColor: customerStatusBackgroundColor[customerStatus],
+            outline: '2px solid rgba(255, 255, 255, 0.8)',
+          }}
+        >
+          {customerStatus}
+        </div>
       </div>
     );
   }
