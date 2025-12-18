@@ -36,6 +36,13 @@ const orderBackgroundColor: Record<OrderStatus, string> = {
   ['Доставлен']: 'var(--color-cyan)',
 };
 
+const productBackgroundColor: Record<ProductStatus, string> = {
+  ['В наличии']: 'var(--color-light-green)',
+  ['Скоро поступит']: 'var(--color-light-orange)',
+  ['Уточняется']: 'var(--color-gray)',
+  ['Снят с продажи']: 'var(--color-light-red)',
+};
+
 export default function AdminListItem({
   type,
   id,
@@ -60,7 +67,7 @@ export default function AdminListItem({
         className={`${styles.item} ${styles.order}`}
         style={{ backgroundColor: orderBackgroundColor[orderStatus] }}
       >
-        <div className={`${styles.tile} ${styles.orderId}`}>{`#${id}`}</div>
+        <div className={`${styles.tile} ${styles.id}`}>{`#${id}`}</div>
         <div className={`${styles.tile} ${styles.orderClient}`}>{customer}</div>
         <div className={`${styles.tile} ${styles.orderDate}`}>
           <span>{date}</span>
@@ -71,6 +78,25 @@ export default function AdminListItem({
           <img src={editIcon} alt="" />
         </div>
         <div className={`${styles.tile} ${styles.orderStatus}`}>{orderStatus}</div>
+      </div>
+    );
+  }
+
+  if (type === 'product') {
+    return (
+      <div
+        className={`${styles.item} ${styles.product}`}
+        style={{ backgroundColor: productBackgroundColor[productStatus] }}
+      >
+        <div className={`${styles.tile} ${styles.id}`}>{`#${id}`}</div>
+        <div className={`${styles.tile} ${styles.productTitle}`}>{title}</div>
+        <div className={`${styles.tile} ${styles.productCategory}`}>{category}</div>
+        <div className={`${styles.tile} ${styles.productPrice}`}>{`${price} р.`}</div>
+        <div className={`${styles.tile} ${styles.productAmount}`}>{`${amount} шт.`}</div>
+        <div className={styles.orderEdit}>
+          <img src={editIcon} alt="" />
+        </div>
+        <div className={`${styles.tile} ${styles.productStatus}`}>{productStatus}</div>
       </div>
     );
   }
