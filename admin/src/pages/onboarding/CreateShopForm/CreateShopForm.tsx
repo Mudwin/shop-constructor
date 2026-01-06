@@ -105,6 +105,7 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
                     name="name"
                     type="input"
                     label="Название магазина"
+                    placeholder="Пятерочка"
                     value={formData.name}
                     onChange={handleChange}
                     required
@@ -131,7 +132,7 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
                   <FormTextField
                     id="email"
                     name="email"
-                    type="email"
+                    type="input"
                     label="Контактный Email"
                     value={formData.email}
                     onChange={handleChange}
@@ -149,7 +150,7 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
                   <FormTextField
                     id="join_password"
                     name="join_password"
-                    type="password"
+                    type="input"
                     label="Пароль для присоединения"
                     value={formData.join_password}
                     onChange={handleChange}
@@ -198,7 +199,7 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
               </>
             )}
 
-            {/* Добавить превью данных из предыдущего шага */}
+            {/* добавить превью данных из предыдущего шага */}
 
             {step === 'step1' ? (
               <Button type="submit" fontSize={15} color="blue" disabled={loading}>

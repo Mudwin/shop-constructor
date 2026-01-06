@@ -28,7 +28,7 @@ export default function OrdersPage() {
                 <img src={parametersIcon} alt="" />
               </div>
               <div className={styles.selectContainer}>
-                <AdminSelect />
+                <AdminSelect type="order" />
               </div>
               <div className={styles.sortIconContainer}>
                 <img src={sortIcon} alt="" />

@@ -28,7 +28,7 @@ export default function ProductsPage() {
               <img src={parametersIcon} alt="" />
             </div>
             <div className={styles.selectContainer}>
-              <AdminSelect />
+              <AdminSelect type="product" />
             </div>
             <div className={styles.sortIconContainer}>
               <img src={sortIcon} alt="" />

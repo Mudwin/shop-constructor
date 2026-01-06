@@ -2,6 +2,7 @@ import styles from './AdminsPage.module.css';
 import PageHeader from '../../../components/ui/PageHeader/PageHeader';
 import ContentTile from '../../../components/ui/ContentTile/ContentTile';
 import Administrator from '../../../components/ui/Administrator/Administrator';
+import Button from '../../../components/ui/Button/Button';
 
 export default function AdminsPage() {
   return (
@@ -33,6 +34,9 @@ export default function AdminsPage() {
           </div>
         </ContentTile>
       </div>
+      <Button fontSize={14} color={'blue'}>
+        Посмотреть заявки
+      </Button>
     </div>
   );
 }

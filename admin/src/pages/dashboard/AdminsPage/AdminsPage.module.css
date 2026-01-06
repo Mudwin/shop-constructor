@@ -8,7 +8,8 @@
 
 .adminsContainer {
   width: 95%;
-  height: 600px;
+  height: 530px;
+  margin-bottom: 20px;
 }
 
 .adminsContentContainer {

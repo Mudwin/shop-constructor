@@ -3,8 +3,10 @@ import React, { useState } from 'react';
 import Select, { type SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
-export default function AdminSelect() {
-  const [category, setCategory] = React.useState('new');
+type SelectType = 'order' | 'product' | 'customer';
+
+export default function AdminSelect({ type }: { type: SelectType }) {
+  const [category, setCategory] = React.useState('');
 
   const handleChange = (event: SelectChangeEvent) => {
     setCategory(event.target.value);
@@ -24,12 +26,47 @@ export default function AdminSelect() {
         borderRadius: '10px',
       }}
     >
-      <MenuItem value="new" defaultChecked>
-        <em>Сначала новые</em>
-      </MenuItem>
-      <MenuItem value="old">
-        <em>Сначала старые</em>
-      </MenuItem>
+      {type === 'order' && (
+        <>
+          <MenuItem value="new" defaultChecked>
+            <em>Сначала новые</em>
+          </MenuItem>
+          <MenuItem value="old">
+            <em>Сначала старые</em>
+          </MenuItem>
+        </>
+      )}
+
+      {type === 'product' && (
+        <>
+          <MenuItem value="expensive" defaultChecked>
+            <em>Сначала дорогие</em>
+          </MenuItem>
+          <MenuItem value="cheap">
+            <em>Сначала дешевые</em>
+          </MenuItem>
+          <MenuItem value="here">
+            <em>В наличии</em>
+          </MenuItem>
+          <MenuItem value="soon">
+            <em>Скоро поступят</em>
+          </MenuItem>
+          <MenuItem value="off">
+            <em>Сняты с продажи</em>
+          </MenuItem>
+        </>
+      )}
+
+      {type === 'customer' && (
+        <>
+          <MenuItem value="new" defaultChecked>
+            <em>Новые</em>
+          </MenuItem>
+          <MenuItem value="active">
+            <em>Активные</em>
+          </MenuItem>
+        </>
+      )}
     </Select>
   );
 }
