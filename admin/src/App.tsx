@@ -16,7 +16,7 @@ import ConstructorPage from './pages/dashboard/ConstructorPage/ConstructorPage';
 import CreateShopForm from './pages/onboarding/CreateShopForm/CreateShopForm';
 import AppSettingsPage from './pages/settings/AppSettingsPage';
 import HelpPage from './pages/help/HelpPage';
-import AuthCallbackPage from './pages/auth/AuthCallbackPage';
+import AuthCallbackPage from './pages/auth-callback/AuthCallbackPage';
 
 export default function App() {
   const dispatch = useDispatch<AppDispatch>();
