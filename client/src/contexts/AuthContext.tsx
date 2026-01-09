@@ -8,14 +8,15 @@ interface User {
   email: string;
   first_name?: string;
   last_name?: string;
-  is_profile_completed: boolean;
+  phone?: string;
+  is_profile_completed?: boolean;
 }
 
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   login: (email: string, otp: string) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   updateUser: (userData: Partial<User>) => void;
 }
 
@@ -26,48 +27,65 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
+    const loadUser = async () => {
+      const token = api.getToken();
 
-    if (token) {
-      loadUser();
-    } else {
-      setIsLoading(false);
-    }
+      if (!token) {
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const userData = await api.getProfile();
+        setUser({
+          id: userData.id,
+          email: userData.email,
+          first_name: userData.first_name,
+          last_name: userData.last_name,
+          phone: userData.phone,
+          is_profile_completed: userData.is_profile_completed,
+        });
+      } catch (error) {
+        console.error('Ошибка загрузки пользователя:', error);
+        api.clearToken();
+        setUser(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadUser();
   }, []);
-
-  const loadUser = async () => {
-    try {
-      const userData = await api.getProfile();
-      setUser(userData);
-    } catch (error) {
-      console.error(`Failed to load user: ${error}`);
-      api.clearToken();
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const login = async (email: string, otp: string) => {
     setIsLoading(true);
 
     try {
       const response = await api.confirmOTP(email, otp);
-      api.setToken(response.access_token);
 
       setUser({
         id: response.user_id,
         email: response.email,
         is_profile_completed: response.is_profile_completed,
       });
+    } catch (error) {
+      console.error('Ошибка входа:', error);
+      throw error;
     } finally {
       setIsLoading(false);
     }
   };
 
-  const logout = () => {
-    api.clearToken();
-    setUser(null);
-    window.location.href = '/auth/login';
+  const logout = async () => {
+    try {
+      await api.logout();
+    } catch (error) {
+      console.error('Ошибка выхода:', error);
+    } finally {
+      api.clearToken();
+      setUser(null);
+      window.location.href = '/auth/login';
+    }
   };
 
   const updateUser = (userData: Partial<User>) => {

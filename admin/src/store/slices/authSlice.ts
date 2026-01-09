@@ -81,7 +81,7 @@ export const initializeAuth = createAsyncThunk<
     console.error('Ошибка инициализации авторизации:', error);
 
     localStorage.removeItem('access_token');
-    api.clearToken();
+    api.clearTokens();
 
     return rejectWithValue(error.message || 'Ошибка загрузки профиля');
   }
@@ -103,7 +103,7 @@ const authSlice = createSlice({
       state.error = null;
       localStorage.removeItem('access_token');
       localStorage.removeItem('has_shop');
-      api.clearToken();
+      api.clearTokens();
     },
     setError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;

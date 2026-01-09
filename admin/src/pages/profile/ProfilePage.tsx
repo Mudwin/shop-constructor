@@ -61,6 +61,10 @@ export default function ProfilePage() {
   return (
     <div style={{ maxWidth: '400px', margin: '50px auto' }}>
       <h1>Профиль</h1>
+      <p style={{ color: '#666', marginBottom: '20px' }}>
+        Заполните или обновите информацию о себе
+      </p>
+
       {error && <div style={{ color: 'red' }}>{error}</div>}
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '15px' }}>
@@ -70,7 +74,6 @@ export default function ProfilePage() {
             name="first_name"
             value={formData.first_name}
             onChange={handleChange}
-            required
             style={{ width: '100%', padding: '8px' }}
           />
         </div>
@@ -81,7 +84,6 @@ export default function ProfilePage() {
             name="last_name"
             value={formData.last_name}
             onChange={handleChange}
-            required
             style={{ width: '100%', padding: '8px' }}
           />
         </div>
