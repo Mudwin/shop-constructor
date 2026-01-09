@@ -16,16 +16,12 @@ export default function EnterPage() {
       setError('');
       setLoading(true);
 
-      const response = await api.sendOTP(data.email);
+      await api.sendOTP(data.email);
 
-      if (response.success) {
-        router.push(`/auth/confirm-code?email=${encodeURIComponent(data.email)}`);
-      } else {
-        throw new Error(response.detail || 'Не удалось отправить код');
-      }
+      router.push(`/auth/confirm-code?email=${encodeURIComponent(data.email)}`);
     } catch (error: any) {
-      setError(error.message || 'Не удалось отправить код');
       console.error('Ошибка отправки OTP:', error);
+      setError(error.message || 'Не удалось отправить код. Проверьте email.');
     } finally {
       setLoading(false);
     }

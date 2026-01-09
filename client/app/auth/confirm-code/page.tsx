@@ -27,20 +27,15 @@ export default function ConfirmCodePage() {
 
       const response = await api.confirmOTP(email, data.code);
 
-      if (response.access_token) {
-        api.setToken(response.access_token);
-
-        if (response.is_profile_completed) {
-          window.location.href = `http://localhost:5173/auth-callback?token=${response.access_token}&user_id=${response.user_id}&email=${encodeURIComponent(response.email)}&is_profile_completed=true`;
-        } else {
-          router.push(`/auth/complete-profile?token=${response.access_token}`);
-        }
+      if (response.access_token && response.user_id && response.email) {
+        const token = api.getToken();
+        window.location.href = `http://localhost:5173/auth-callback?token=${token}&user_id=${response.user_id}&email=${encodeURIComponent(response.email)}`;
       } else {
-        throw new Error('Неверный ответ от сервера');
+        throw new Error('Неверный ответ от сервера: отсутствуют обязательные поля');
       }
     } catch (error: any) {
-      setError(error.message || 'Неверный код или ошибка ввода');
       console.error('Ошибка подтверждения OTP:', error);
+      setError(error.message || 'Неверный код или ошибка ввода');
     } finally {
       setLoading(false);
     }
@@ -50,7 +45,7 @@ export default function ConfirmCodePage() {
     <>
       {error && <div style={{ color: 'red', marginBottom: '10px' }}>{error}</div>}
       <p style={{ marginBottom: '20px' }}>
-        Мы отправили код на email: <strong>{email}</strong>
+        Мы отправили 6-значный код на email: <strong>{email}</strong>
       </p>
       <CustomForm onSubmit={handleSubmit} type="confirm">
         <CustomFormField label="Введите 6-значный код" id="code" placeholder="123456" />
