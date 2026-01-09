@@ -1,67 +1,50 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useAppDispatch } from '../../store';
+import { initializeAuth } from '../../store/slices/authSlice';
 import { api } from '../../api';
 
 export default function AuthCallbackPage() {
-  const navigate = useNavigate();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const handleAuth = async () => {
+    const processAuth = async () => {
       try {
-        console.log('🚀 AuthCallbackPage: Начало обработки');
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token');
-        const userId = urlParams.get('user_id');
-        const email = urlParams.get('email');
-
-        console.log('📊 Параметры из URL:', { token, userId, email });
+        const token = searchParams.get('token');
+        const user_id = searchParams.get('user_id');
+        const email = searchParams.get('email');
+        const isProfileCompleted = searchParams.get('is_profile_completed') === 'true';
 
         if (!token) {
-          console.error('❌ Нет токена в URL');
-          setStatus('error');
-          navigate('/error');
-          return;
+          throw new Error('Токен не найден');
         }
 
-        console.log('💾 Сохраняем токен...');
         api.setToken(token);
-        localStorage.setItem('access_token', token);
-        console.log('✅ Токен сохранен');
 
-        console.log('👤 Получаем профиль...');
-        const profile = await api.getProfile();
-        console.log('✅ Профиль получен:', profile);
+        await dispatch(initializeAuth()).unwrap(); // unwrap для обработки ошибок
 
-        console.log('🏪 Получаем магазины...');
-        const shops = await api.getMyShops();
-        console.log('✅ Магазины получены:', shops);
-
-        if (shops && shops.length > 0) {
-          console.log('📦 У пользователя есть магазин, перенаправляем в /dashboard');
+        if (isProfileCompleted) {
           navigate('/dashboard');
         } else {
-          console.log('🆕 У пользователя нет магазина, перенаправляем в /onboarding');
-          navigate('/onboarding');
+          navigate('/onboarding/complete-profile');
         }
-
-        setStatus('success');
       } catch (error) {
-        console.error('❌ Ошибка в AuthCallbackPage:', error);
-        setStatus('error');
-        navigate('/error');
+        console.error('Ошибка обработки авторизации:', error);
+        navigate('/login');
       }
     };
 
-    handleAuth();
-  }, [navigate]);
+    processAuth();
+  }, [dispatch, navigate, searchParams]);
 
   return (
     <div style={{ padding: '20px', textAlign: 'center' }}>
       <h1>Авторизация</h1>
-      {status === 'loading' && <p>⏳ Обработка входа...</p>}
-      {status === 'error' && <p style={{ color: 'red' }}>❌ Ошибка авторизации</p>}
+      {status === 'loading' && <p>Обработка входа...</p>}
+      {status === 'error' && <p style={{ color: 'red' }}>Ошибка авторизации</p>}
     </div>
   );
 }

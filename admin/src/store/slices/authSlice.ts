@@ -9,6 +9,7 @@ interface AuthState {
       firstName?: string;
       lastName?: string;
       phone?: string;
+      isProfileCompleted?: boolean;
     } | null;
   };
   shop: {
@@ -16,6 +17,8 @@ interface AuthState {
     name: string | null;
     role: 'owner' | 'viewer' | null;
   } | null;
+  isLoading: boolean;
+  error: string | null;
 }
 
 const initialState: AuthState = {
@@ -25,99 +28,64 @@ const initialState: AuthState = {
     profile: null,
   },
   shop: null,
+  isLoading: false,
+  error: null,
 };
 
-export const initializeAuth = createAsyncThunk(
-  'auth/initialize',
-  async (): Promise<{
-    user: AuthState['user'];
-    shop: AuthState['shop'];
-  } | null> => {
-    const token = localStorage.getItem('access_token');
-    if (!token) {
-      return null;
-    }
+type InitializeAuthSuccess = {
+  user: AuthState['user'];
+  shop: AuthState['shop'];
+};
 
-    try {
-      if (import.meta.env.DEV) {
-        console.log('🔧 DEV MODE: Использую моковые данные для авторизации');
-
-        const hasShop = localStorage.getItem('has_shop') === 'true';
-
-        return {
-          user: {
-            id: '1',
-            email: 'dev@example.com',
-            profile: {
-              firstName: 'Иван',
-              lastName: 'Иванов',
-              phone: '+79991234567',
-            },
-          },
-          shop: hasShop
-            ? {
-                id: '1',
-                name: 'Тестовый магазин',
-                role: 'owner',
-              }
-            : null,
-        };
-      }
-
-      api.setToken(token);
-      const profile = await api.getProfile();
-      const shops = await api.getMyShops();
-
-      return {
-        user: {
-          id: String(profile.id),
-          email: profile.email,
-          profile: {
-            firstName: profile.first_name,
-            lastName: profile.last_name,
-            phone: profile.phone,
-          },
-        },
-        shop:
-          shops.length > 0
-            ? {
-                id: String(shops[0].id),
-                name: shops[0].name,
-                role: 'owner',
-              }
-            : null,
-      };
-    } catch (error) {
-      console.error('Ошибка инициализации авторизации:', error);
-
-      if (import.meta.env.DEV) {
-        console.log('DEV MODE: моковые данные после ошибки');
-        return {
-          user: {
-            id: '1',
-            email: 'dev@example.com',
-            profile: {
-              firstName: 'Иван',
-              lastName: 'Иванов',
-              phone: '+79991234567',
-            },
-          },
-          shop:
-            localStorage.getItem('has_shop') === 'true'
-              ? {
-                  id: '1',
-                  name: 'Тестовый магазин',
-                  role: 'owner',
-                }
-              : null,
-        };
-      }
-
-      localStorage.removeItem('access_token');
-      return null;
-    }
+export const initializeAuth = createAsyncThunk<
+  InitializeAuthSuccess,
+  void,
+  { rejectValue: string }
+>('auth/initialize', async (_, { rejectWithValue }) => {
+  const token = localStorage.getItem('access_token');
+  if (!token) {
+    return rejectWithValue('Токен не найден');
   }
-);
+
+  try {
+    const profile = await api.getProfile();
+
+    let shop = null;
+    try {
+      const shops = await api.getMyShops();
+      if (shops && shops.length > 0) {
+        shop = {
+          id: String(shops[0].id),
+          name: shops[0].name,
+          role: 'owner',
+        };
+      }
+    } catch (shopError) {
+      console.warn('Ошибка загрузки магазинов:', shopError);
+    }
+
+    return {
+      user: {
+        id: String(profile.id),
+        email: profile.email,
+        profile: {
+          firstName: profile.first_name,
+          lastName: profile.last_name,
+          phone: profile.phone,
+          isProfileCompleted: profile.is_profile_completed,
+        },
+      },
+      shop,
+    } as InitializeAuthSuccess;
+  } catch (error: any) {
+    console.error('Ошибка инициализации авторизации:', error);
+
+    localStorage.removeItem('access_token');
+    api.clearToken();
+
+    return rejectWithValue(error.message || 'Ошибка загрузки профиля');
+  }
+});
 
 const authSlice = createSlice({
   name: 'auth',
@@ -132,28 +100,33 @@ const authSlice = createSlice({
     clearAuth: (state) => {
       state.user = initialState.user;
       state.shop = initialState.shop;
+      state.error = null;
       localStorage.removeItem('access_token');
       localStorage.removeItem('has_shop');
+      api.clearToken();
+    },
+    setError: (state, action: PayloadAction<string | null>) => {
+      state.error = action.payload;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(
-      initializeAuth.fulfilled,
-      (
-        state,
-        action: PayloadAction<{
-          user: AuthState['user'];
-          shop: AuthState['shop'];
-        } | null>
-      ) => {
-        if (action.payload) {
-          state.user = action.payload.user;
-          state.shop = action.payload.shop;
-        }
-      }
-    );
+    builder
+      .addCase(initializeAuth.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(initializeAuth.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+        state.shop = action.payload.shop;
+        state.isLoading = false;
+        state.error = null;
+      })
+      .addCase(initializeAuth.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || 'Неизвестная ошибка';
+      });
   },
 });
 
-export const { setUser, setShop, clearAuth } = authSlice.actions;
+export const { setUser, setShop, clearAuth, setError } = authSlice.actions;
 export default authSlice.reducer;
