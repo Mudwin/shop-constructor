@@ -42,7 +42,7 @@
 
 .productsContainer {
   width: 90%;
-  height: 450px;
+  height: fit-content;
   margin-bottom: 20px;
 }
 

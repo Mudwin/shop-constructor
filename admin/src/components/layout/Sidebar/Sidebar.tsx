@@ -16,7 +16,6 @@ export default function Sidebar({ type }: SidebarProps) {
 
   const handleLogout = () => {
     dispatch(clearAuth());
-    api.clearToken();
     window.location.href = 'http://localhost:3000/auth/login';
   };
 
