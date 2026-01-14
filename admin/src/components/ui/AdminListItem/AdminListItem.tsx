@@ -20,7 +20,7 @@ interface AdminListItemProps {
   category?: string;
   price?: number;
   amount?: number;
-  productStatus?: ProductStatus;
+  productStatus?: string;
   onEdit?: () => void;
   onDelete?: () => void;
 
@@ -38,10 +38,17 @@ const orderBackgroundColor: Record<OrderStatus, string> = {
 };
 
 const productBackgroundColor: Record<string, string> = {
-  ['ACTIVE']: 'var(--color-light-green)',
-  ['PENDING']: 'var(--color-light-orange)',
-  ['IN_STOCK']: 'var(--color-gray)',
-  ['INACTIVE']: 'var(--color-light-red)',
+  ['active']: 'var(--color-light-green)',
+  ['pending']: 'var(--color-light-orange)',
+  ['draft']: 'var(--color-gray)',
+  ['inactive']: 'var(--color-light-red)',
+};
+
+const productStatusDisplayMap: Record<string, string> = {
+  ['active']: 'В наличии',
+  ['pending']: 'Скоро поступит',
+  ['in_stock']: 'Черновик',
+  ['inactive']: 'Снят с продажи',
 };
 
 const customerStatusBackgroundColor: Record<CustomerStatus, string> = {
@@ -49,14 +56,14 @@ const customerStatusBackgroundColor: Record<CustomerStatus, string> = {
   ['Активный']: 'var(--color-light-green)',
 };
 
-const getDisplayProductStatus = (status: string): string => {
-  const statusMap: Record<string, string> = {
-    ACTIVE: 'В наличии',
-    PENDING: 'Скоро поступит',
-    IN_STOCK: 'Черновик',
-    INACTIVE: 'Снят с продажи',
-  };
-  return statusMap[status] || status;
+const getDisplayProductStatus = (apiStatus: string): string => {
+  const normalizedStatus = apiStatus?.toLowerCase() || '';
+  return productStatusDisplayMap[normalizedStatus] || apiStatus || 'Неизвестно';
+};
+
+const getProductStatusColor = (apiStatus: string): string => {
+  const normalizedStatus = apiStatus?.toLowerCase() || '';
+  return productBackgroundColor[normalizedStatus] || 'var(--color-gray)';
 };
 
 export default function AdminListItem({
@@ -71,7 +78,7 @@ export default function AdminListItem({
   category,
   price,
   amount,
-  productStatus = 'В наличии',
+  productStatus = 'active',
   name,
   email,
   averageMoney,
@@ -79,10 +86,8 @@ export default function AdminListItem({
   onEdit,
   onDelete,
 }: AdminListItemProps) {
-  const displayProductStatus =
-    type === 'product' ? getDisplayProductStatus(productStatus) : productStatus;
-  const productBgColor =
-    type === 'product' ? productBackgroundColor[productStatus] || 'var(--color-gray)' : undefined;
+  const displayProductStatus = getDisplayProductStatus(productStatus);
+  const productBgColor = getProductStatusColor(productStatus);
 
   if (type === 'order') {
     return (
@@ -120,6 +125,7 @@ export default function AdminListItem({
           className={styles.orderEdit}
           onClick={onEdit}
           style={{ cursor: onEdit ? 'pointer' : 'default' }}
+          title="Редактировать"
         >
           <img src={editIcon} alt="Редактировать" />
         </button>
@@ -152,4 +158,6 @@ export default function AdminListItem({
       </div>
     );
   }
+
+  return null;
 }
