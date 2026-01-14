@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState, AppDispatch } from './store';
 import { initializeAuth } from './store/slices/authSlice';
@@ -20,15 +20,44 @@ import AuthCallbackPage from './pages/auth-callback/AuthCallbackPage';
 
 export default function App() {
   const dispatch = useDispatch<AppDispatch>();
+  const [isInitializing, setIsInitializing] = useState(true);
+  
   const hasShop = useSelector((state: RootState) => !!state.auth.shop);
-  const isInitialized = useSelector((state: RootState) => state.auth.user.id !== null);
+  const userId = useSelector((state: RootState) => state.auth.user.id);
+  const isLoading = useSelector((state: RootState) => state.auth.isLoading);
 
   useEffect(() => {
-    dispatch(initializeAuth());
+    const init = async () => {
+      await dispatch(initializeAuth());
+      setIsInitializing(false);
+    };
+    init();
   }, [dispatch]);
 
-  if (!isInitialized) {
-    return <div>Загрузка...</div>;
+  // Пока идет инициализация, показываем загрузку
+  if (isInitializing || isLoading) {
+    return (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh' 
+      }}>
+        <div>Загрузка...</div>
+      </div>
+    );
+  }
+
+  // После инициализации, если пользователь не залогинен - редирект на логин
+  if (!userId) {
+    // Здесь может быть редирект на страницу логина
+    return (
+      <BrowserRouter>
+        <Routes>
+          <Route path="*" element={<Navigate to="/auth-callback" replace />} />
+        </Routes>
+      </BrowserRouter>
+    );
   }
 
   return (

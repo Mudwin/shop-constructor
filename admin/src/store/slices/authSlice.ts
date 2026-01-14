@@ -50,6 +50,8 @@ export const initializeAuth = createAsyncThunk<
   try {
     const profile = await api.getProfile();
 
+    const hasShopInStorage = localStorage.getItem('has_shop') === 'true';
+
     let shop = null;
     try {
       const shops = await api.getMyShops();
@@ -59,6 +61,9 @@ export const initializeAuth = createAsyncThunk<
           name: shops[0].name,
           role: 'owner',
         };
+      } else if (hasShopInStorage) {
+        // Если в localStorage есть магазин, но API не вернул - перезапросим
+        console.warn('Магазин в localStorage, но не в API');
       }
     } catch (shopError) {
       console.warn('Ошибка загрузки магазинов:', shopError);

@@ -1,7 +1,7 @@
 import type { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { setShop } from '../../../store/slices/authSlice';
 import { api } from '../../../api';
 import styles from './CreateShopForm.module.css';
@@ -19,28 +19,50 @@ interface CreateShopFormProps {
   step: 'step1' | 'step2';
 }
 
+interface ShopFormData {
+  name: string;
+  description: string;
+  join_password: string;
+}
+
 export default function CreateShopForm({ step }: CreateShopFormProps) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    join_password: '',
-    domain: '',
-    email: '',
-    country: '',
+  
+  // Сохраняем данные формы в localStorage для сохранения между шагами
+  const [formData, setFormData] = useState<ShopFormData>(() => {
+    const saved = localStorage.getItem('shop_creation_data');
+    return saved ? JSON.parse(saved) : {
+      name: '',
+      description: '',
+      join_password: '',
+    };
   });
 
   const [agreementConfidential, setAgreementConfidential] = useState(false);
   const [agreementTerms, setAgreementTerms] = useState(false);
 
+  // Сохраняем данные формы при изменении
+  useEffect(() => {
+    localStorage.setItem('shop_creation_data', JSON.stringify(formData));
+  }, [formData]);
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     if (step === 'step1') {
+      // Валидация полей первого шага
+      if (!formData.name.trim()) {
+        setError('Введите название магазина');
+        return;
+      }
+      if (!formData.join_password || formData.join_password.length < 8) {
+        setError('Пароль для присоединения должен быть не менее 8 символов');
+        return;
+      }
       navigate('/onboarding/step2');
       return;
     }
@@ -56,24 +78,41 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
     setError('');
 
     try {
+      // Отправляем только те поля, которые ожидает бэкенд
       const shopData = {
         name: formData.name,
         description: formData.description || undefined,
         join_password: formData.join_password,
       };
 
-      const shop = await api.createShop(formData);
+      console.log('1. Отправка данных:', shopData);
+      
+      const response = await api.createShop(shopData);
+      console.log('2. Ответ от сервера:', response);
+
+      // Очищаем временные данные
+      localStorage.removeItem('shop_creation_data');
 
       dispatch(
         setShop({
-          id: String(shop.id),
-          name: shop.name,
+          id: String(response.id),
+          name: response.name,
           role: 'owner',
         })
       );
 
-      navigate('/dashboard');
+      console.log('3. После dispatch, проверяем Redux state');
+
+      localStorage.setItem('current_shop_id', String(response.id));
+      localStorage.setItem('has_shop', 'true');
+
+      setTimeout(() => {
+        console.log('4. Переход в /dashboard');
+        navigate('/dashboard');
+      }, 100);
+      
     } catch (error: any) {
+      console.error('5. Ошибка:', error);
       setError(error.message || 'Ошибка создания магазина');
     } finally {
       setLoading(false);
@@ -81,10 +120,11 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name || e.target.id]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   return (
@@ -92,9 +132,15 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
       <PageHeader>Создание магазина</PageHeader>
       <ContentTile width="1100" height="600">
         <div className={styles.formContainer}>
-          <h2 className={styles.header}>Чтобы создать магазин, заполните поля ниже</h2>
+          <h2 className={styles.header}>
+            {step === 'step1' ? 'Основные данные магазина' : 'Дополнительные настройки и соглашения'}
+          </h2>
 
-          {/* Добавить отображение ошибки */}
+          {error && (
+            <div className={styles.errorMessage}>
+              {error}
+            </div>
+          )}
 
           <form className={styles.form} onSubmit={handleSubmit}>
             {step === 'step1' && (
@@ -104,58 +150,32 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
                     id="name"
                     name="name"
                     type="input"
-                    label="Название магазина"
+                    label="Название магазина *"
                     placeholder="Пятерочка"
                     value={formData.name}
                     onChange={handleChange}
                     required
                   />
                   <FormTextField
-                    id="description"
-                    name="description"
-                    type="textarea"
-                    label="Описание магазина"
-                    value={formData.description}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className={styles.column}>
-                  <FormTextField
-                    id="domain"
-                    name="domain"
-                    type="input"
-                    label="Адрес сайта (домен)"
-                    value={formData.domain}
-                    onChange={handleChange}
-                    placeholder="example-shop.ru"
-                  />
-                  <FormTextField
-                    id="email"
-                    name="email"
-                    type="input"
-                    label="Контактный Email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="shop@example.com"
-                  />
-                  <FormTextField
-                    id="country"
-                    name="country"
-                    type="input"
-                    label="Страна"
-                    value={formData.country}
-                    onChange={handleChange}
-                    placeholder="Россия"
-                  />
-                  <FormTextField
                     id="join_password"
                     name="join_password"
                     type="input"
-                    label="Пароль для присоединения"
+                    label="Пароль для присоединения *"
                     value={formData.join_password}
                     onChange={handleChange}
                     required
                     placeholder="Минимум 8 символов"
+                  />
+                </div>
+                <div className={styles.column}>
+                  <FormTextField
+                    id="description"
+                    name="description"
+                    type="textarea"
+                    label="Описание магазина"
+                    placeholder="Краткое описание вашего магазина"
+                    value={formData.description}
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -164,10 +184,6 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
             {step === 'step2' && (
               <>
                 <div className={styles.step2Container}>
-                  <div className={styles.column}>
-                    <FormLabel element="logo">Логотип сайта</FormLabel>
-                    <FormFileInput id="logo" />
-                  </div>
                   <div className={styles.column}>
                     <FormLabel element="agreement" customMargin="20">
                       Согласия и условия
@@ -199,18 +215,27 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
               </>
             )}
 
-            {/* добавить превью данных из предыдущего шага */}
-
             {step === 'step1' ? (
               <Button type="submit" fontSize={15} color="blue" disabled={loading}>
                 Далее
                 <img src={nextIcon} className={styles.buttonIcon} alt="" />
               </Button>
             ) : (
-              <Button type="submit" fontSize={15} color="blue" disabled={loading}>
-                {loading ? 'Создание...' : 'Создать'}
-                <img src={finishIcon} className={styles.buttonIcon} alt="" />
-              </Button>
+              <div className={styles.finalActions}>
+                <Button 
+                  type="button" 
+                  fontSize={15} 
+                  color="blue" 
+                  onClick={() => navigate('/onboarding/step1')}
+                  disabled={loading}
+                >
+                  Назад
+                </Button>
+                <Button type="submit" fontSize={15} color="blue" disabled={loading}>
+                  {loading ? 'Создание...' : 'Создать магазин'}
+                  <img src={finishIcon} className={styles.buttonIcon} alt="" />
+                </Button>
+              </div>
             )}
           </form>
         </div>
