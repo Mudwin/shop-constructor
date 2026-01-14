@@ -115,3 +115,28 @@
   flex-direction: column;
   gap: 15px;
 }
+
+.filterSelect {
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: transparent;
+  cursor: pointer;
+  min-width: 150px;
+}
+
+.loading,
+.error,
+.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: #666;
+  font-size: 16px;
+}
+
+.error {
+  color: #c62828;
+}

@@ -13,7 +13,7 @@ interface AuthState {
     } | null;
   };
   shop: {
-    id: string | null;
+    id: number | null;
     name: string | null;
     role: 'owner' | 'viewer' | null;
   } | null;
@@ -57,7 +57,7 @@ export const initializeAuth = createAsyncThunk<
       const shops = await api.getMyShops();
       if (shops && shops.length > 0) {
         shop = {
-          id: String(shops[0].id),
+          id: shops[0].id,
           name: shops[0].name,
           role: 'owner',
         };
@@ -100,7 +100,16 @@ const authSlice = createSlice({
       state.user = action.payload;
     },
     setShop: (state, action: PayloadAction<AuthState['shop']>) => {
+      console.log('setShop вызван с action.payload:', action.payload);
+
+      if (!action.payload || !action.payload.id || action.payload.id === null) {
+        console.error('Некорректные данные магазина:', action.payload);
+        state.shop = null;
+        return;
+      }
+
       state.shop = action.payload;
+      console.log('Магазин сохранен в Redux:', state.shop);
     },
     clearAuth: (state) => {
       state.user = initialState.user;

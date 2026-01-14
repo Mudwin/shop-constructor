@@ -3,7 +3,7 @@ import styles from './FormTextarea.module.css';
 interface FormTextareaProps {
   id: string;
   required?: boolean;
-  value?: string;
+  value?: string | number;
   name?: string;
   placeholder?: string;
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;

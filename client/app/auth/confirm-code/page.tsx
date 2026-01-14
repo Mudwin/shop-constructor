@@ -28,7 +28,7 @@ export default function ConfirmCodePage() {
       const response = await api.confirmOTP(email, data.code);
 
       if (response.access_token && response.user_id && response.email) {
-        const token = api.getToken();
+        const token = response.access_token;
         window.location.href = `http://localhost:5173/auth-callback?token=${token}&user_id=${response.user_id}&email=${encodeURIComponent(response.email)}`;
       } else {
         throw new Error('Неверный ответ от сервера: отсутствуют обязательные поля');

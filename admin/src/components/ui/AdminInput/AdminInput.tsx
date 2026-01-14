@@ -6,17 +6,26 @@ interface AdminInputProps {
   name?: string;
   placeholder?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: React.KeyboardEvent) => void;
 }
 
-export default function AdminInput({ id, value, name, placeholder, onChange }: AdminInputProps) {
+export default function AdminInput({
+  id,
+  value,
+  name,
+  placeholder,
+  onKeyDown,
+  onChange,
+}: AdminInputProps) {
   return (
     <input
       className={styles.input}
       id={id}
       name={name}
       placeholder={placeholder}
-      //   value={value || ''}
+      value={value || ''}
       onChange={onChange}
+      onKeyDown={onKeyDown}
     />
   );
 }

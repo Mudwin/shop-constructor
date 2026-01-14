@@ -31,15 +31,17 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  
+
   // Сохраняем данные формы в localStorage для сохранения между шагами
   const [formData, setFormData] = useState<ShopFormData>(() => {
     const saved = localStorage.getItem('shop_creation_data');
-    return saved ? JSON.parse(saved) : {
-      name: '',
-      description: '',
-      join_password: '',
-    };
+    return saved
+      ? JSON.parse(saved)
+      : {
+          name: '',
+          description: '',
+          join_password: '',
+        };
   });
 
   const [agreementConfidential, setAgreementConfidential] = useState(false);
@@ -53,20 +55,6 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    if (step === 'step1') {
-      // Валидация полей первого шага
-      if (!formData.name.trim()) {
-        setError('Введите название магазина');
-        return;
-      }
-      if (!formData.join_password || formData.join_password.length < 8) {
-        setError('Пароль для присоединения должен быть не менее 8 символов');
-        return;
-      }
-      navigate('/onboarding/step2');
-      return;
-    }
-
     if (step === 'step2') {
       if (!agreementConfidential || !agreementTerms) {
         setError('Необходимо принять все соглашения');
@@ -78,41 +66,47 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
     setError('');
 
     try {
-      // Отправляем только те поля, которые ожидает бэкенд
       const shopData = {
         name: formData.name,
         description: formData.description || undefined,
         join_password: formData.join_password,
       };
 
-      console.log('1. Отправка данных:', shopData);
-      
-      const response = await api.createShop(shopData);
-      console.log('2. Ответ от сервера:', response);
+      console.log('Отправка данных магазина:', shopData);
 
-      // Очищаем временные данные
-      localStorage.removeItem('shop_creation_data');
+      const response = await api.createShop(shopData);
+      console.log('Ответ от сервера при создании магазина:', response);
+
+      // ВАЖНО: Проверяем структуру ответа!
+      // Если response содержит вложенный объект, например response.data или response.shop
+      const shopResponse = response.data || response.shop || response;
+
+      console.log('Извлеченные данные магазина:', shopResponse);
+
+      if (!shopResponse || !shopResponse.id) {
+        throw new Error('Сервер не вернул ID магазина');
+      }
 
       dispatch(
         setShop({
-          id: String(response.id),
-          name: response.name,
+          id: shopResponse.id,
+          name: shopResponse.name,
           role: 'owner',
         })
       );
 
-      console.log('3. После dispatch, проверяем Redux state');
-
-      localStorage.setItem('current_shop_id', String(response.id));
+      // Сохраняем в localStorage
+      localStorage.setItem('current_shop_id', String(shopResponse.id));
       localStorage.setItem('has_shop', 'true');
 
-      setTimeout(() => {
-        console.log('4. Переход в /dashboard');
-        navigate('/dashboard');
-      }, 100);
-      
+      console.log('Магазин сохранен в Redux и localStorage:', {
+        id: String(shopResponse.id),
+        name: shopResponse.name,
+      });
+
+      navigate('/dashboard');
     } catch (error: any) {
-      console.error('5. Ошибка:', error);
+      console.error('Полная ошибка создания магазина:', error);
       setError(error.message || 'Ошибка создания магазина');
     } finally {
       setLoading(false);
@@ -121,7 +115,7 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -133,14 +127,12 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
       <ContentTile width="1100" height="600">
         <div className={styles.formContainer}>
           <h2 className={styles.header}>
-            {step === 'step1' ? 'Основные данные магазина' : 'Дополнительные настройки и соглашения'}
+            {step === 'step1'
+              ? 'Основные данные магазина'
+              : 'Дополнительные настройки и соглашения'}
           </h2>
 
-          {error && (
-            <div className={styles.errorMessage}>
-              {error}
-            </div>
-          )}
+          {error && <div className={styles.errorMessage}>{error}</div>}
 
           <form className={styles.form} onSubmit={handleSubmit}>
             {step === 'step1' && (
@@ -222,10 +214,10 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
               </Button>
             ) : (
               <div className={styles.finalActions}>
-                <Button 
-                  type="button" 
-                  fontSize={15} 
-                  color="blue" 
+                <Button
+                  type="button"
+                  fontSize={15}
+                  color="blue"
                   onClick={() => navigate('/onboarding/step1')}
                   disabled={loading}
                 >

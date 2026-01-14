@@ -4,8 +4,10 @@ interface FormInputProps {
   id: string;
   type?: string;
   required?: boolean;
-  value?: string;
+  value?: string | number;
   name?: string;
+  min?: string;
+  step?: string;
   placeholder?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -16,6 +18,8 @@ export default function FormInput({
   required = false,
   name,
   placeholder,
+  min,
+  step,
   value,
   onChange,
 }: FormInputProps) {
@@ -24,6 +28,8 @@ export default function FormInput({
       className={styles.input}
       id={id}
       name={name}
+      min={min}
+      step={step}
       type={type}
       placeholder={placeholder}
       required={required}

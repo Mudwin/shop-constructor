@@ -44,8 +44,10 @@
 }
 
 .orderEdit {
-  width: 25px;
+  width: 50px;
   cursor: pointer;
+  background-color: transparent;
+  border: none;
 }
 
 .orderStatus {

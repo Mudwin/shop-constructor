@@ -10,7 +10,9 @@ interface FormTextFieldProps {
   label: string;
   name?: string;
   required?: boolean;
-  value?: string;
+  step?: string;
+  value?: string | number;
+  min?: string;
   placeholder?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
@@ -20,7 +22,9 @@ export default function FormTextField({
   type,
   inputType = 'text',
   label,
+  step,
   name,
+  min,
   required = false,
   value,
   onChange,
@@ -39,6 +43,8 @@ export default function FormTextField({
           type={inputType}
           required={required}
           value={value}
+          min={min}
+          step={step}
           onChange={onChange}
           placeholder={placeholder}
         />

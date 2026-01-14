@@ -1,10 +1,10 @@
 import styles from './AdminListItem.module.css';
 import editIcon from '../../../assets/icons/edit-icon.svg';
 
-type AdminListItemType = 'order' | 'customer' | 'product';
+type AdminListItemType = 'order' | 'customer' | 'product' | 'admin';
 
 type OrderStatus = 'Оплачен' | 'В обработке' | 'Отменен' | 'Доставлен';
-type ProductStatus = 'В наличии' | 'Скоро поступит' | 'Уточняется' | 'Снят с продажи';
+type ProductStatus = 'В наличии' | 'Скоро поступит' | 'Черновик' | 'Снят с продажи' | string;
 type CustomerStatus = 'Новый' | 'Активный';
 
 interface AdminListItemProps {
@@ -21,6 +21,8 @@ interface AdminListItemProps {
   price?: number;
   amount?: number;
   productStatus?: ProductStatus;
+  onEdit?: () => void;
+  onDelete?: () => void;
 
   name?: string;
   email?: string;
@@ -35,16 +37,26 @@ const orderBackgroundColor: Record<OrderStatus, string> = {
   ['Доставлен']: 'var(--color-cyan)',
 };
 
-const productBackgroundColor: Record<ProductStatus, string> = {
-  ['В наличии']: 'var(--color-light-green)',
-  ['Скоро поступит']: 'var(--color-light-orange)',
-  ['Уточняется']: 'var(--color-gray)',
-  ['Снят с продажи']: 'var(--color-light-red)',
+const productBackgroundColor: Record<string, string> = {
+  ['ACTIVE']: 'var(--color-light-green)',
+  ['PENDING']: 'var(--color-light-orange)',
+  ['IN_STOCK']: 'var(--color-gray)',
+  ['INACTIVE']: 'var(--color-light-red)',
 };
 
 const customerStatusBackgroundColor: Record<CustomerStatus, string> = {
   ['Новый']: 'var(--color-light-red)',
   ['Активный']: 'var(--color-light-green)',
+};
+
+const getDisplayProductStatus = (status: string): string => {
+  const statusMap: Record<string, string> = {
+    ACTIVE: 'В наличии',
+    PENDING: 'Скоро поступит',
+    IN_STOCK: 'Черновик',
+    INACTIVE: 'Снят с продажи',
+  };
+  return statusMap[status] || status;
 };
 
 export default function AdminListItem({
@@ -64,7 +76,14 @@ export default function AdminListItem({
   email,
   averageMoney,
   customerStatus = 'Новый',
+  onEdit,
+  onDelete,
 }: AdminListItemProps) {
+  const displayProductStatus =
+    type === 'product' ? getDisplayProductStatus(productStatus) : productStatus;
+  const productBgColor =
+    type === 'product' ? productBackgroundColor[productStatus] || 'var(--color-gray)' : undefined;
+
   if (type === 'order') {
     return (
       <div
@@ -78,9 +97,9 @@ export default function AdminListItem({
           {time}
         </div>
         <div className={`${styles.tile} ${styles.orderSum}`}>{`${sum} р.`}</div>
-        <div className={styles.orderEdit}>
-          <img src={editIcon} alt="" />
-        </div>
+        <button className={styles.orderEdit}>
+          <img src={editIcon} alt="Редактировать" />
+        </button>
         <div className={`${styles.tile} ${styles.orderStatus}`}>{orderStatus}</div>
       </div>
     );
@@ -90,17 +109,21 @@ export default function AdminListItem({
     return (
       <div
         className={`${styles.item} ${styles.product}`}
-        style={{ backgroundColor: productBackgroundColor[productStatus] }}
+        style={{ backgroundColor: productBgColor }}
       >
         <div className={`${styles.tile} ${styles.id}`}>{`#${id}`}</div>
         <div className={`${styles.tile} ${styles.productTitle}`}>{title}</div>
         <div className={`${styles.tile} ${styles.productCategory}`}>{category}</div>
         <div className={`${styles.tile} ${styles.productPrice}`}>{`${price} р.`}</div>
         <div className={`${styles.tile} ${styles.productAmount}`}>{`${amount} шт.`}</div>
-        <div className={styles.orderEdit}>
-          <img src={editIcon} alt="" />
-        </div>
-        <div className={`${styles.tile} ${styles.productStatus}`}>{productStatus}</div>
+        <button
+          className={styles.orderEdit}
+          onClick={onEdit}
+          style={{ cursor: onEdit ? 'pointer' : 'default' }}
+        >
+          <img src={editIcon} alt="Редактировать" />
+        </button>
+        <div className={`${styles.tile} ${styles.productStatus}`}>{displayProductStatus}</div>
       </div>
     );
   }
@@ -115,7 +138,7 @@ export default function AdminListItem({
           {`${averageMoney} р.`}
         </div>
         <div className={styles.orderEdit}>
-          <img src={editIcon} alt="" />
+          <img src={editIcon} alt="Редактировать" />
         </div>
         <div
           className={`${styles.tile} ${styles.customerStatus}`}

@@ -196,6 +196,8 @@ class ApiClient {
     category_id?: number;
     status?: string;
     search_query?: string;
+    sort_by?: string;
+    sort_order?: string;
   }) {
     const queryParams = new URLSearchParams();
     Object.entries(params).forEach(([key, value]) => {
@@ -214,15 +216,19 @@ class ApiClient {
     });
   }
 
+  async getProduct(shop_id: number, product_id: number) {
+    return this.request(`/products/shops/${shop_id}/products/${product_id}`);
+  }
+
   async updateProduct(shop_id: number, product_id: number, data: any) {
-    return this.request(`/products/shops/${shop_id}/products/${product_id}`, {
+    return this.request(`/products/${product_id}?shop_id=${shop_id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   }
 
   async deleteProduct(shop_id: number, product_id: number) {
-    return this.request(`/products/shops/${shop_id}/products/${product_id}/delete`, {
+    return this.request(`/products/${product_id}?shop_id=${shop_id}`, {
       method: 'DELETE',
     });
   }
@@ -259,8 +265,9 @@ class ApiClient {
   }
 
   // ==================== Категории ====================
-  async getCategoryTree(shop_id: number) {
-    return this.request(`/categories/shops/${shop_id}/categories/tree`);
+  async getCategories(shop_id: number, params?: any) {
+    const queryParams = new URLSearchParams(params || {});
+    return this.request(`/categories/shops/${shop_id}/categories?${queryParams.toString()}`);
   }
 
   async createCategory(shop_id: number, data: any) {

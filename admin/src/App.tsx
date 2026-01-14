@@ -17,11 +17,13 @@ import CreateShopForm from './pages/onboarding/CreateShopForm/CreateShopForm';
 import AppSettingsPage from './pages/settings/AppSettingsPage';
 import HelpPage from './pages/help/HelpPage';
 import AuthCallbackPage from './pages/auth-callback/AuthCallbackPage';
+import AddProductPage from './pages/dashboard/AddProductPage/AddProductPage';
+import EditProductPage from './pages/dashboard/EditProductPage/EditProductPage';
 
 export default function App() {
   const dispatch = useDispatch<AppDispatch>();
   const [isInitializing, setIsInitializing] = useState(true);
-  
+
   const hasShop = useSelector((state: RootState) => !!state.auth.shop);
   const userId = useSelector((state: RootState) => state.auth.user.id);
   const isLoading = useSelector((state: RootState) => state.auth.isLoading);
@@ -34,23 +36,25 @@ export default function App() {
     init();
   }, [dispatch]);
 
-  // Пока идет инициализация, показываем загрузку
+  const isAuthCallback = window.location.pathname === '/auth-callback';
+
   if (isInitializing || isLoading) {
     return (
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        height: '100vh' 
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
         <div>Загрузка...</div>
       </div>
     );
   }
 
   // После инициализации, если пользователь не залогинен - редирект на логин
-  if (!userId) {
-    // Здесь может быть редирект на страницу логина
+  if (!userId && !isAuthCallback) {
     return (
       <BrowserRouter>
         <Routes>
@@ -89,6 +93,8 @@ export default function App() {
           <Route index element={<DashboardPage />} />
           <Route path="orders" element={<OrdersPage />} />
           <Route path="products" element={<ProductsPage />} />
+          <Route path="products/add" element={<AddProductPage />} />
+          <Route path="products/edit/:productId" element={<EditProductPage />} />
           <Route path="customers" element={<CustomersPage />} />
           <Route path="settings" element={<SettingsPage />} />
           <Route path="admins" element={<AdminsPage />} />
