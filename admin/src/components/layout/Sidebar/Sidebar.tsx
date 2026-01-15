@@ -5,7 +5,6 @@ import SettingsBlock from '../../ui/SettingsBlock/SettingsBlock';
 import NavItem from '../../ui/NavItem/NavItem';
 import { useDispatch } from 'react-redux';
 import { clearAuth } from '../../../store/slices/authSlice';
-import { api } from '../../../api';
 
 interface SidebarProps {
   type: 'onboard' | 'dashboard' | 'profile';

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import type { RootState } from '../../../store';
@@ -23,14 +23,6 @@ interface Product {
   stock_quantity: number;
   status: string;
   status_display?: string;
-}
-
-interface ProductListResponse {
-  products: Product[];
-  total: number;
-  page: number;
-  page_size: number;
-  total_pages: number;
 }
 
 const statusDisplayMap: Record<string, string> = {

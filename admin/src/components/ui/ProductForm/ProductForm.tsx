@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import type { RootState } from '../../../store';
 import { api } from '../../../api';
 import styles from './ProductForm.module.css';
@@ -23,18 +23,8 @@ interface Category {
   parent_id?: number;
 }
 
-interface ProductImage {
-  url: string;
-  thumbnail_url?: string;
-  alt_text?: string;
-  is_main?: boolean;
-  is_primary?: boolean;
-  position?: number;
-}
-
 export default function ProductForm({ productId, onSuccess }: ProductFormProps) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { shop } = useSelector((state: RootState) => state.auth);
 
   const shopCheck = checkShopState(shop);
