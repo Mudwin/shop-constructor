@@ -222,8 +222,6 @@
   line-height: 1.4;
 }
 
-/* Добавьте в конец файла: */
-
 .errorText {
   color: #f44336;
   font-size: 14px;
@@ -278,8 +276,6 @@
   font-weight: 500;
 }
 
-/* Добавьте эти стили: */
-
 .categoryTree {
   display: flex;
   flex-direction: column;
@@ -314,7 +310,6 @@
   cursor: not-allowed;
 }
 
-/* Улучшенное отображение дерева категорий */
 .categoryItem {
   background: white;
   border: 1px solid #eaeaea;
@@ -384,14 +379,12 @@
   border-color: #ffcdd2;
 }
 
-/* Иерархические отступы для подкатегорий */
 .categoryItem > .categoryTree {
   margin-top: 10px;
   padding-left: 20px;
   border-left: 2px dashed #e0e0e0;
 }
 
-/* Для вложенных категорий уменьшаем шрифт */
 .categoryItem .categoryItem .categoryName {
   font-size: 15px;
 }

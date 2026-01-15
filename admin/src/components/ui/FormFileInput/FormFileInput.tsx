@@ -21,13 +21,11 @@ export default function FormFileInput({
   const [imageError, setImageError] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Обработчик изменения файла
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
     setImageError(false);
 
     if (file) {
-      // Проверяем, является ли файл изображением
       if (!file.type.startsWith('image/')) {
         alert('Пожалуйста, выберите файл изображения');
         if (fileInputRef.current) {
@@ -36,7 +34,6 @@ export default function FormFileInput({
         return;
       }
 
-      // Проверяем размер файла (например, не более 5MB)
       if (file.size > 5 * 1024 * 1024) {
         alert('Размер файла не должен превышать 5MB');
         if (fileInputRef.current) {
@@ -45,7 +42,6 @@ export default function FormFileInput({
         return;
       }
 
-      // Создаем URL для превью
       const objectUrl = URL.createObjectURL(file);
       setPreviewUrl(objectUrl);
 
@@ -59,7 +55,6 @@ export default function FormFileInput({
     }
   };
 
-  // Очистка превью при размонтировании
   useEffect(() => {
     return () => {
       if (previewUrl && previewUrl.startsWith('blob:')) {
@@ -68,24 +63,19 @@ export default function FormFileInput({
     };
   }, [previewUrl]);
 
-  // Обработка внешнего значения
   useEffect(() => {
     setImageError(false);
 
     if (value instanceof File) {
-      // Если значение - File объект
       const objectUrl = URL.createObjectURL(value);
       setPreviewUrl(objectUrl);
     } else if (typeof value === 'string' && value) {
-      // Если значение - URL строка
       setPreviewUrl(value);
     } else {
-      // Если значение null или undefined
       setPreviewUrl(null);
     }
   }, [value]);
 
-  // Клик по label для открытия файлового диалога
   const handleLabelClick = (e: React.MouseEvent) => {
     if (disabled) return;
     if (fileInputRef.current) {
@@ -93,7 +83,6 @@ export default function FormFileInput({
     }
   };
 
-  // Удаление изображения
   const handleRemoveImage = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (disabled) return;
@@ -109,7 +98,6 @@ export default function FormFileInput({
     }
   };
 
-  // Обработчик ошибки загрузки изображения
   const handleImageError = () => {
     setImageError(true);
   };

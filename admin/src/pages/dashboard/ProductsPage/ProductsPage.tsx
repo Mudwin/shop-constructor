@@ -33,7 +33,6 @@ interface ProductListResponse {
   total_pages: number;
 }
 
-// Карта статусов для отображения
 const statusDisplayMap: Record<string, string> = {
   active: 'В наличии',
   pending: 'Скоро поступит',

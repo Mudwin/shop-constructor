@@ -77,13 +77,7 @@ export default function ContactSettings({ initialData, onSave, saveStatus }: Con
         </div>
 
         <div className={styles.actions}>
-          <Button
-            type="submit"
-            color="blue"
-            fontSize={14}
-            // loading={saveStatus === 'saving'}
-            disabled={saveStatus === 'saving'}
-          >
+          <Button type="submit" color="blue" fontSize={14} disabled={saveStatus === 'saving'}>
             {saveStatus === 'saving' ? 'Сохранение...' : 'Сохранить контакты'}
           </Button>
 

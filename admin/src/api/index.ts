@@ -94,7 +94,6 @@ class ApiClient {
     }
   }
 
-  // ==================== Аутентификация ====================
   async sendOTP(email: string) {
     return this.request('/send-otp', {
       method: 'POST',
@@ -139,7 +138,6 @@ class ApiClient {
     });
   }
 
-  // ==================== Профиль ====================
   async getProfile() {
     return this.request('/profile');
   }
@@ -156,7 +154,6 @@ class ApiClient {
     });
   }
 
-  // ==================== Магазины ====================
   async createShop(data: { name: string; description?: string; join_password: string }) {
     return this.request('/shops/', {
       method: 'POST',
@@ -208,7 +205,6 @@ class ApiClient {
     );
   }
 
-  // ==================== Товары ====================
   async getProducts(params: {
     shop_id: number;
     skip?: number;
@@ -253,7 +249,6 @@ class ApiClient {
     });
   }
 
-  // ==================== Заказы ====================
   async getOrders(params: {
     shop_id: number;
     skip?: number;
@@ -284,7 +279,6 @@ class ApiClient {
     });
   }
 
-  // ==================== Категории ====================
   async getCategories(shop_id: number, params?: any) {
     const queryParams = new URLSearchParams(params || {});
     return this.request(`/categories/shops/${shop_id}/categories?${queryParams.toString()}`);
@@ -297,18 +291,15 @@ class ApiClient {
     });
   }
 
-  // ==================== Клиенты ====================
   async getCustomers(shop_id: number, params?: any) {
     const queryParams = new URLSearchParams(params || {});
     return this.request(`/customers/shops/${shop_id}/customers?${queryParams.toString()}`);
   }
 
-  // ==================== Дашборд ====================
   async getDashboardStats(shop_id: number) {
     return this.request(`/dashboard/shops/${shop_id}/stats`);
   }
 
-  // ==================== Настройки ====================
   async getShopSettings(shop_id: number) {
     return this.request(`/shop-settings/shops/${shop_id}/settings`);
   }
@@ -320,7 +311,6 @@ class ApiClient {
     });
   }
 
-  // ==================== Дизайн ====================
   async getShopDesign(shop_id: number) {
     try {
       return await this.request(`/design/shops/${shop_id}/design`);
@@ -348,7 +338,6 @@ class ApiClient {
     }
   }
 
-  // ==================== Загрузка файлов ====================
   async uploadImage(shop_id: number, file: File, folder: string = 'products', product_id?: number) {
     const formData = new FormData();
     formData.append('file', file);

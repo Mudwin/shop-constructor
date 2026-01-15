@@ -46,7 +46,6 @@ class ApiClient {
     return response.json();
   }
 
-  // ==================== Аутентификация ====================
   async sendOTP(email: string) {
     return this.request('/send-otp', {
       method: 'POST',
@@ -102,7 +101,6 @@ class ApiClient {
     });
   }
 
-  // ==================== Магазины ====================
   async createShop(data: { name: string; description?: string; join_password: string }) {
     return this.request('/shops/', {
       method: 'POST',

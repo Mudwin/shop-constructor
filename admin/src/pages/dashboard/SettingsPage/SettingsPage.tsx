@@ -29,7 +29,6 @@ export default function SettingsPage() {
 
   const shopId = useSelector((state: RootState) => state.auth.shop?.id);
 
-  // Загружаем данные только один раз при монтировании или изменении shopId
   useEffect(() => {
     if (shopId && !isInitialized) {
       loadData();
@@ -37,7 +36,6 @@ export default function SettingsPage() {
     }
   }, [shopId, isInitialized]);
 
-  // Также слушаем изменения в localStorage для обновлений из других вкладок
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === `shop_${shopId}` && shopId) {
@@ -53,7 +51,6 @@ export default function SettingsPage() {
     if (!shopId) return;
 
     try {
-      // Загружаем из localStorage
       const shopSettings = shopStorage.getSettings(shopId);
       const shopCategories = shopStorage.getCategories(shopId);
       const shopDesign = shopStorage.getDesign(shopId);
@@ -66,7 +63,6 @@ export default function SettingsPage() {
       });
     } catch (error) {
       console.error('Ошибка загрузки данных:', error);
-      // Если ошибка, устанавливаем значения по умолчанию
       setSettings({
         store_name: '',
         store_email: '',
@@ -88,7 +84,6 @@ export default function SettingsPage() {
     try {
       setSaveStatus({ ...saveStatus, general: 'saving' });
 
-      // Сохраняем настройки
       const newSettings = {
         ...settings,
         store_name: data.storeName,
@@ -98,14 +93,12 @@ export default function SettingsPage() {
 
       shopStorage.updateSettings(shopId, newSettings);
 
-      // Сохраняем логотип
       if (data.logoBase64) {
         shopStorage.updateDesign(shopId, {
           logoBase64: data.logoBase64,
         });
       }
 
-      // Обновляем состояние
       setSettings(newSettings);
       if (data.logoBase64) {
         setDesign({ ...design, logoBase64: data.logoBase64 });
@@ -185,7 +178,6 @@ export default function SettingsPage() {
         parentId,
       });
 
-      // Обновляем список категорий
       const updatedCategories = shopStorage.getCategories(shopId);
       setCategories(updatedCategories);
 

@@ -83,13 +83,7 @@ export default function SocialMediaSettings({
         </div>
 
         <div className={styles.actions}>
-          <Button
-            type="submit"
-            color="blue"
-            fontSize={14}
-            // loading={saveStatus === 'saving'}
-            disabled={saveStatus === 'saving'}
-          >
+          <Button type="submit" color="blue" fontSize={14} disabled={saveStatus === 'saving'}>
             {saveStatus === 'saving' ? 'Сохранение...' : 'Сохранить ссылки'}
           </Button>
 

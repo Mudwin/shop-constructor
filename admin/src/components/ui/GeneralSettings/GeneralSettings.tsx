@@ -26,7 +26,6 @@ export default function GeneralSettings({ initialData, onSave, saveStatus }: Gen
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Валидация
     if (!storeName.trim()) {
       alert('Введите название магазина');
       return;
@@ -39,12 +38,10 @@ export default function GeneralSettings({ initialData, onSave, saveStatus }: Gen
 
     let finalLogoBase64 = logoBase64;
 
-    // Если выбран новый файл, конвертируем в base64
     if (logoFile) {
       try {
         const base64 = await fileToBase64(logoFile);
 
-        // Проверяем размер
         if (!checkBase64Size(base64)) {
           setLogoError('Размер изображения не должен превышать 5MB');
           return;
@@ -67,7 +64,6 @@ export default function GeneralSettings({ initialData, onSave, saveStatus }: Gen
         logoBase64: finalLogoBase64,
       });
 
-      // Не очищаем поля после успешного сохранения
       setLogoError('');
     } catch (error) {
       console.error('Ошибка сохранения:', error);
@@ -79,7 +75,6 @@ export default function GeneralSettings({ initialData, onSave, saveStatus }: Gen
     setLogoError('');
 
     if (file) {
-      // Сразу показываем превью
       const reader = new FileReader();
       reader.onloadend = () => {
         setLogoBase64(reader.result as string);

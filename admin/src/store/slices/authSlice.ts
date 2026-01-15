@@ -62,7 +62,6 @@ export const initializeAuth = createAsyncThunk<
           role: 'owner',
         };
       } else if (hasShopInStorage) {
-        // Если в localStorage есть магазин, но API не вернул - перезапросим
         console.warn('Магазин в localStorage, но не в API');
       }
     } catch (shopError) {

@@ -10,7 +10,6 @@ import Button from '../../../components/ui/Button/Button';
 import nextIcon from '../../../assets/icons/next-icon.svg';
 import finishIcon from '../../../assets/icons/finish-icon.svg';
 import FormLabel from '../../../components/ui/FormLabel/FormLabel';
-import FormFileInput from '../../../components/ui/FormFileInput/FormFileInput';
 import FormAgreement from '../../../components/ui/FormAgreement/FormAgreement';
 import PageHeader from '../../../components/ui/PageHeader/PageHeader';
 import ContentTile from '../../../components/ui/ContentTile/ContentTile';
@@ -32,7 +31,6 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Сохраняем данные формы в localStorage для сохранения между шагами
   const [formData, setFormData] = useState<ShopFormData>(() => {
     const saved = localStorage.getItem('shop_creation_data');
     return saved
@@ -47,7 +45,6 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
   const [agreementConfidential, setAgreementConfidential] = useState(false);
   const [agreementTerms, setAgreementTerms] = useState(false);
 
-  // Сохраняем данные формы при изменении
   useEffect(() => {
     localStorage.setItem('shop_creation_data', JSON.stringify(formData));
   }, [formData]);
@@ -72,16 +69,10 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
         join_password: formData.join_password,
       };
 
-      console.log('Отправка данных магазина:', shopData);
-
       const response = await api.createShop(shopData);
       console.log('Ответ от сервера при создании магазина:', response);
 
-      // ВАЖНО: Проверяем структуру ответа!
-      // Если response содержит вложенный объект, например response.data или response.shop
       const shopResponse = response.data || response.shop || response;
-
-      console.log('Извлеченные данные магазина:', shopResponse);
 
       if (!shopResponse || !shopResponse.id) {
         throw new Error('Сервер не вернул ID магазина');
@@ -95,14 +86,8 @@ export default function CreateShopForm({ step }: CreateShopFormProps) {
         })
       );
 
-      // Сохраняем в localStorage
       localStorage.setItem('current_shop_id', String(shopResponse.id));
       localStorage.setItem('has_shop', 'true');
-
-      console.log('Магазин сохранен в Redux и localStorage:', {
-        id: String(shopResponse.id),
-        name: shopResponse.name,
-      });
 
       navigate('/dashboard');
     } catch (error: any) {

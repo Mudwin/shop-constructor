@@ -1,15 +1,13 @@
 .label {
-  /* custom-checkbox-label */
   display: flex;
   align-items: center;
   cursor: pointer;
-  padding-left: 0; /* Убираем стандартный отступ, если есть */
+  padding-left: 0;
   font-size: 16px;
   line-height: 24px;
 }
 
 .originalCheckbox {
-  /* custom-checkbox-input */
   position: absolute;
   opacity: 0;
   cursor: pointer;
@@ -18,7 +16,6 @@
 }
 
 .customCheckbox {
-  /* custom-checkbox-box */
   display: inline-block;
   position: relative;
   width: 30px;

@@ -20,7 +20,6 @@ export default function CategoriesSettings({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
 
-  // Получаем все категории для выпадающего списка
   const getAllCategoriesFlat = (
     categories: Category[],
     level: number = 0
@@ -55,7 +54,6 @@ export default function CategoriesSettings({
 
       await onAddCategory(newCategoryName, newCategoryDescription, selectedParentId);
 
-      // Очищаем поля только после успешного сохранения
       setNewCategoryName('');
       setNewCategoryDescription('');
       setSelectedParentId(undefined);
@@ -77,7 +75,6 @@ export default function CategoriesSettings({
     }
   };
 
-  // Рекурсивный компонент для отображения дерева категорий
   const CategoryTree = ({ categories, level = 0 }: { categories: Category[]; level?: number }) => {
     return (
       <div className={styles.categoryTree}>

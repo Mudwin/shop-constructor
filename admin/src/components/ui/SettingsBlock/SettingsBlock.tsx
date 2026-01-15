@@ -23,7 +23,7 @@ export default function SettingsBlock({ handleLogout }: { handleLogout: () => vo
         color="white"
         maxWidth
         justifyStart
-        paddingBlock="10"
+        paddingBlock={10}
         onClick={handleSettingsClick}
       >
         <img className={styles.icon} src={settingsIcon}></img>
@@ -34,7 +34,7 @@ export default function SettingsBlock({ handleLogout }: { handleLogout: () => vo
         color="white"
         maxWidth
         justifyStart
-        paddingBlock="10"
+        paddingBlock={10}
         onClick={handleHelpClick}
       >
         <img className={styles.icon} src={questionIcon}></img>
@@ -45,7 +45,7 @@ export default function SettingsBlock({ handleLogout }: { handleLogout: () => vo
         color="white"
         maxWidth
         justifyStart
-        paddingBlock="10"
+        paddingBlock={10}
         onClick={handleLogout}
       >
         <img className={styles.icon} src={logoutIcon}></img>

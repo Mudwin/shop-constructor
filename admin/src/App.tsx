@@ -76,10 +76,8 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Роут для обработки callback из регистрации из клиента */}
         <Route path="/auth-callback" element={<AuthCallbackPage />} />
 
-        {/* Общие роуты */}
         <Route path="/profile" element={<Layout type="profile" />}>
           <Route index element={<ProfilePage />} />
         </Route>
@@ -90,14 +88,12 @@ export default function App() {
           <Route index element={<HelpPage />} />
         </Route>
 
-        {/* Pre-shop роуты */}
         <Route path="/onboarding" element={<Layout type="onboard" />}>
           <Route index element={<OnboardingPage />} />
           <Route path="step1" element={<CreateShopForm step="step1" />} />
           <Route path="step2" element={<CreateShopForm step="step2" />} />
         </Route>
 
-        {/* Post-shop роуты */}
         <Route path="/dashboard" element={<Layout type="dashboard" />}>
           <Route index element={<DashboardPage />} />
           <Route path="orders" element={<OrdersPage />} />
@@ -110,10 +106,8 @@ export default function App() {
           <Route path="constructor" element={<ConstructorPage />} />
         </Route>
 
-        {/* Редирект в зависимости от состояния */}
         <Route path="/" element={<Navigate to={hasShop ? '/dashboard' : '/onboarding'} />} />
 
-        {/* Fallback-редирект */}
         <Route path="*" element={<Navigate to={hasShop ? '/dashboard' : '/onboarding'} />} />
       </Routes>
     </BrowserRouter>
