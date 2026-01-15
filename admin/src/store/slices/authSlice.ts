@@ -85,9 +85,6 @@ export const initializeAuth = createAsyncThunk<
   } catch (error: any) {
     console.error('Ошибка инициализации авторизации:', error);
 
-    // localStorage.removeItem('access_token');
-    // api.clearTokens();
-
     return rejectWithValue(error.message || 'Ошибка загрузки профиля');
   }
 });

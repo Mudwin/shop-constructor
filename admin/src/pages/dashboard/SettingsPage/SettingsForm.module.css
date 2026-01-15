@@ -1,0 +1,401 @@
+.container {
+  max-width: 800px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 30px 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.section {
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 25px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 20px 0;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.formGroup:last-child {
+  margin-bottom: 0;
+}
+
+.label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #333;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-sky);
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+}
+
+.inputWithPrefix {
+  display: flex;
+  align-items: center;
+}
+
+.prefix {
+  padding: 12px 15px;
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  border-right: none;
+  border-radius: 6px 0 0 6px;
+  color: #666;
+  font-size: 14px;
+}
+
+.inputWithPrefix .input {
+  border-radius: 0 6px 6px 0;
+  flex: 1;
+}
+
+.textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #333;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 80px;
+  box-sizing: border-box;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-sky);
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+}
+
+.logoSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.helpText {
+  font-size: 12px;
+  color: #666;
+  margin: 5px 0 0 0;
+  line-height: 1.4;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eaeaea;
+}
+
+.successMessage {
+  color: #4caf50;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.errorMessage {
+  color: #f44336;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: #666;
+}
+
+.emptyMessage {
+  color: #666;
+  font-style: italic;
+  text-align: center;
+  padding: 40px;
+}
+
+.comingSoon {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.comingSoonIcon {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.comingSoon h3 {
+  font-size: 20px;
+  color: #333;
+  margin: 0 0 10px 0;
+}
+
+.comingSoon p {
+  color: #666;
+  margin: 0 0 20px 0;
+  line-height: 1.5;
+}
+
+.comingSoonNote {
+  font-size: 14px;
+  color: #888;
+  line-height: 1.8;
+}
+
+.categoriesList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.categoryItem {
+  background: white;
+  border: 1px solid #eaeaea;
+  border-radius: 6px;
+  padding: 15px;
+}
+
+.categoryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.categoryName {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.categoryCount {
+  font-size: 14px;
+  color: var(--color-dark);
+  font-weight: 500;
+}
+
+.categoryDescription {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Добавьте в конец файла: */
+
+.errorText {
+  color: #f44336;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.categoryActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.deleteButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 5px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.deleteButton:hover {
+  background-color: #f5f5f5;
+}
+
+.categoryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.categoryName {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.categoryDescription {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.categoryCount {
+  font-size: 14px;
+  color: var(--color-dark);
+  font-weight: 500;
+}
+
+/* Добавьте эти стили: */
+
+.categoryTree {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.categoryContent {
+  flex: 1;
+}
+
+.select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #333;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--color-sky);
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+}
+
+.select:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+/* Улучшенное отображение дерева категорий */
+.categoryItem {
+  background: white;
+  border: 1px solid #eaeaea;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 8px;
+  transition: border-color 0.2s ease;
+}
+
+.categoryItem:hover {
+  border-color: var(--color-sky);
+}
+
+.categoryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.categoryName {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.categoryDescription {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.categoryActions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-shrink: 0;
+}
+
+.categoryCount {
+  font-size: 14px;
+  color: var(--color-dark);
+  font-weight: 500;
+  background: #f0f9f0;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.deleteButton {
+  background: none;
+  border: 1px solid #ffebee;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  color: #f44336;
+  background-color: #ffebee;
+}
+
+.deleteButton:hover {
+  background-color: #ffcdd2;
+  border-color: #ffcdd2;
+}
+
+/* Иерархические отступы для подкатегорий */
+.categoryItem > .categoryTree {
+  margin-top: 10px;
+  padding-left: 20px;
+  border-left: 2px dashed #e0e0e0;
+}
+
+/* Для вложенных категорий уменьшаем шрифт */
+.categoryItem .categoryItem .categoryName {
+  font-size: 15px;
+}
+
+.categoryItem .categoryItem .categoryDescription {
+  font-size: 13px;
+}
