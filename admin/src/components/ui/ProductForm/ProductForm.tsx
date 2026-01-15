@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../../../store';
@@ -9,10 +9,11 @@ import Button from '../Button/Button';
 import FormLabel from '../FormLabel/FormLabel';
 import PageHeader from '../PageHeader/PageHeader';
 import ContentTile from '../ContentTile/ContentTile';
+import FormFileInput from '../FormFileInput/FormFileInput';
 import { checkShopState } from '../../../utils/shopCheck';
 
 interface ProductFormProps {
-  productId?: number; // Если передано, то редактирование
+  productId?: number;
   onSuccess?: () => void;
 }
 
@@ -20,6 +21,15 @@ interface Category {
   id: number;
   name: string;
   parent_id?: number;
+}
+
+interface ProductImage {
+  url: string;
+  thumbnail_url?: string;
+  alt_text?: string;
+  is_main?: boolean;
+  is_primary?: boolean;
+  position?: number;
 }
 
 export default function ProductForm({ productId, onSuccess }: ProductFormProps) {
@@ -37,6 +47,14 @@ export default function ProductForm({ productId, onSuccess }: ProductFormProps) 
   const [error, setError] = useState('');
   const [categories, setCategories] = useState<Category[]>([]);
 
+  // Состояния для изображений
+  const [mainImageFile, setMainImageFile] = useState<File | null>(null);
+  const [additionalImageFiles, setAdditionalImageFiles] = useState<File[]>([]);
+
+  // Состояния для существующих изображений
+  const [mainImageUrl, setMainImageUrl] = useState<string | null>(null);
+  const [additionalImageUrls, setAdditionalImageUrls] = useState<string[]>([]);
+
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -48,17 +66,7 @@ export default function ProductForm({ productId, onSuccess }: ProductFormProps) 
     tags: [] as string[],
   });
 
-  useEffect(() => {
-    console.log('ProductForm: состояние магазина:', {
-      shop,
-      shopId: shop?.id,
-      shopIdType: typeof shop?.id,
-      parsedId: shop?.id ? shop.id : 'не определено',
-      isNaN: shop?.id ? isNaN(shop.id) : true,
-    });
-  }, [shop]);
-
-  // Загружаем категории при монтировании
+  // Загружаем категории
   useEffect(() => {
     const loadCategories = async () => {
       if (!shop?.id) return;
@@ -88,6 +96,9 @@ export default function ProductForm({ productId, onSuccess }: ProductFormProps) 
       setLoading(true);
       try {
         const product = await api.getProduct(shop.id, productId);
+        console.log('Загружен товар:', product);
+
+        // Устанавливаем данные формы
         setFormData({
           name: product.name || '',
           description: product.description || '',
@@ -98,8 +109,55 @@ export default function ProductForm({ productId, onSuccess }: ProductFormProps) 
           sku: product.sku || '',
           tags: product.tags || [],
         });
+
+        // Обрабатываем изображения товара
+        if (product.images && Array.isArray(product.images)) {
+          console.log('Изображения товара:', product.images);
+
+          // Находим главное изображение (is_main: true или is_primary: true)
+          const mainImage =
+            product.images.find(
+              (img: { is_main: boolean; is_primary: boolean; position: number }) =>
+                img.is_main === true || img.is_primary === true || img.position === 0
+            ) || product.images[0];
+
+          // Находим дополнительные изображения (все остальные)
+          const additionalImages = product.images.filter(
+            (img: { is_main: boolean; is_primary: boolean }) =>
+              !(img.is_main === true || img.is_primary === true) && img !== mainImage
+          );
+
+          console.log('Главное изображение:', mainImage);
+          console.log('Дополнительные изображения:', additionalImages);
+
+          // Устанавливаем URL главного изображения
+          if (mainImage?.url) {
+            const fullUrl = api.getFullImageUrl(mainImage.url);
+            setMainImageUrl(fullUrl);
+            console.log('Установлен URL главного изображения:', fullUrl);
+          } else {
+            setMainImageUrl(null);
+          }
+
+          // Устанавливаем URL дополнительных изображений
+          if (additionalImages.length > 0) {
+            const urls = additionalImages
+              .map((img: { url: string | null }) => api.getFullImageUrl(img.url))
+              .filter((url: string): url is string => url !== null);
+            setAdditionalImageUrls(urls);
+            console.log('Установлены URL дополнительных изображений:', urls);
+          } else {
+            setAdditionalImageUrls([]);
+          }
+        } else {
+          // Если изображений нет, сбрасываем состояния
+          setMainImageUrl(null);
+          setAdditionalImageUrls([]);
+          console.log('У товара нет изображений');
+        }
       } catch (error: any) {
         setError(error.message || 'Ошибка загрузки товара');
+        console.error('Ошибка загрузки товара:', error);
       } finally {
         setLoading(false);
       }
@@ -107,8 +165,54 @@ export default function ProductForm({ productId, onSuccess }: ProductFormProps) 
 
     if (productId) {
       loadProduct();
+    } else {
+      // Если создание нового товара, сбрасываем состояния изображений
+      setMainImageUrl(null);
+      setAdditionalImageUrls([]);
+      setMainImageFile(null);
+      setAdditionalImageFiles([]);
     }
   }, [productId, shop]);
+
+  // Функция для загрузки изображений
+  const uploadProductImages = async (shopId: number, productId: number) => {
+    try {
+      const allFiles: File[] = [];
+
+      // Добавляем главное изображение с флагом is_main
+      if (mainImageFile) {
+        const formData = new FormData();
+        formData.append('files', mainImageFile);
+        formData.append('is_main', 'true');
+
+        await api.request(`/upload/shops/${shopId}/products/${productId}/upload-images`, {
+          method: 'POST',
+          body: formData,
+        });
+        console.log('Главное изображение загружено');
+      }
+
+      // Загружаем дополнительные изображения
+      if (additionalImageFiles.length > 0) {
+        for (const file of additionalImageFiles) {
+          const formData = new FormData();
+          formData.append('files', file);
+          formData.append('is_main', 'false');
+
+          await api.request(`/upload/shops/${shopId}/products/${productId}/upload-images`, {
+            method: 'POST',
+            body: formData,
+          });
+        }
+        console.log('Дополнительные изображения загружены');
+      }
+
+      return true;
+    } catch (error: any) {
+      console.error('Ошибка загрузки изображений:', error);
+      throw new Error('Не удалось загрузить изображения');
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -138,63 +242,7 @@ export default function ProductForm({ productId, onSuccess }: ProductFormProps) 
     setError('');
 
     try {
-      if (!shop || !shop.id || shop.id === null) {
-        console.error('Магазин не найден или имеет некорректный ID:', shop);
-        return (
-          <div className={styles.container}>
-            <PageHeader>Ошибка</PageHeader>
-            <ContentTile width="1100" height="600">
-              <div className={styles.errorMessage}>
-                Магазин не найден или не создан. Пожалуйста:
-                <ol>
-                  <li>Создайте магазин через панель онбординга</li>
-                  <li>Перезагрузите страницу</li>
-                  <li>Если проблема сохраняется, очистите localStorage</li>
-                </ol>
-                <div className={styles.debugInfo}>
-                  <p>Отладочная информация:</p>
-                  <pre>{JSON.stringify({ shop }, null, 2)}</pre>
-                </div>
-              </div>
-              <div className={styles.actions}>
-                <Button fontSize={15} color="blue" onClick={() => navigate('/onboarding')}>
-                  Перейти к созданию магазина
-                </Button>
-                <Button
-                  fontSize={15}
-                  color="blue"
-                  onClick={() => {
-                    localStorage.clear();
-                    window.location.reload();
-                  }}
-                >
-                  Очистить данные и перезагрузить
-                </Button>
-              </div>
-            </ContentTile>
-          </div>
-        );
-      }
-
       const shopId = shop.id;
-
-      if (isNaN(shopId)) {
-        console.error('Некорректный ID магазина (NaN):', shop.id);
-        return (
-          <div className={styles.container}>
-            <PageHeader>Ошибка</PageHeader>
-            <ContentTile width="1100" height="600">
-              <div className={styles.errorMessage}>
-                Некорректный ID магазина: "{shop.id}". Пожалуйста, перезагрузите страницу.
-              </div>
-              <Button fontSize={15} color="blue" onClick={() => window.location.reload()}>
-                Перезагрузить страницу
-              </Button>
-            </ContentTile>
-          </div>
-        );
-      }
-
       const productData = {
         ...formData,
         price: Number(formData.price),
@@ -202,13 +250,30 @@ export default function ProductForm({ productId, onSuccess }: ProductFormProps) 
         category_id: formData.category_id ? Number(formData.category_id) : null,
       };
 
+      let productResponse;
+
       if (productId) {
-        // Редактирование
-        await api.updateProduct(shopId, productId, productData);
+        // Редактирование существующего товара
+        productResponse = await api.updateProduct(shopId, productId, productData);
+        console.log('Товар обновлен:', productResponse);
+
+        // Загружаем новые изображения
+        if (mainImageFile || additionalImageFiles.length > 0) {
+          await uploadProductImages(shopId, productId);
+        }
+
         alert('Товар успешно обновлен!');
       } else {
-        // Создание
-        await api.createProduct(shopId, productData);
+        // Создание нового товара
+        productResponse = await api.createProduct(shopId, productData);
+        console.log('Товар создан:', productResponse);
+
+        // Если есть изображения, загружаем их
+        if (mainImageFile || additionalImageFiles.length > 0) {
+          const newProductId = productResponse.id;
+          await uploadProductImages(shopId, newProductId);
+        }
+
         alert('Товар успешно создан!');
       }
 
@@ -242,13 +307,44 @@ export default function ProductForm({ productId, onSuccess }: ProductFormProps) 
     }));
   };
 
+  // Получаем значение для главного изображения
+  const getMainImageValue = () => {
+    // Если есть новый файл, возвращаем его
+    if (mainImageFile) {
+      return mainImageFile;
+    }
+    // Иначе возвращаем URL существующего изображения
+    return mainImageUrl;
+  };
+
+  // Обработчик загрузки дополнительных изображений
+  const handleAddAdditionalImages = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []) as File[];
+    if (files.length > 0) {
+      setAdditionalImageFiles((prev) => [...prev, ...files]);
+    }
+  };
+
+  const additionalFileInputRef = useRef<HTMLInputElement>(null);
+
+  // 2. Обработчик клика
+  const handleAddImagesClick = (e: React.MouseEvent) => {
+    e.preventDefault(); // Предотвращаем стандартное поведение
+    e.stopPropagation(); // Останавливаем всплытие, чтобы другие обработчики не мешали
+
+    if (additionalFileInputRef.current) {
+      console.log('Клик по инпуту...'); // Проверьте в консоли, доходит ли код сюда
+      additionalFileInputRef.current.click();
+    }
+  };
+
   return (
     <div className={styles.container}>
       <PageHeader>{productId ? 'Редактирование товара' : 'Создание товара'}</PageHeader>
 
       {error && <div className={styles.errorMessage}>{error}</div>}
 
-      <ContentTile width="1100" height="600">
+      <ContentTile width="1100" height="700">
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.formColumns}>
             <div className={styles.column}>
@@ -282,6 +378,107 @@ export default function ProductForm({ productId, onSuccess }: ProductFormProps) 
                 value={formData.sku}
                 onChange={handleChange}
               />
+
+              {/* Блок загрузки изображений */}
+              <div className={styles.imageUploadSection}>
+                <FormLabel element="image">Изображение товара</FormLabel>
+                <div className={styles.imageUploadContainer}>
+                  <div className={styles.mainImageUpload}>
+                    <FormFileInput
+                      id="mainImage"
+                      value={getMainImageValue()}
+                      onChange={(file) => setMainImageFile(file)}
+                      accept="image/*"
+                      disabled={loading}
+                    />
+                    <div className={styles.imageHint}>
+                      {mainImageUrl || mainImageFile
+                        ? 'Основное изображение'
+                        : 'Загрузите основное изображение'}
+                    </div>
+                  </div>
+
+                  {/* Блок для дополнительных изображений */}
+                  <div className={styles.additionalImages}>
+                    <div className={styles.additionalImagesLabel}>
+                      <span>Дополнительные изображения (опционально)</span>
+                      <label htmlFor="additionalImagesInput" className={styles.addImagesButton}>
+                        <Button
+                          type="button"
+                          fontSize={12}
+                          color="blue"
+                          paddingBlock={4}
+                          paddingInline={8}
+                          onClick={handleAddImagesClick}
+                          disabled={loading}
+                        >
+                          + Добавить
+                        </Button>
+                      </label>
+                      <input
+                        id="additionalImagesInput"
+                        ref={additionalFileInputRef}
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        onChange={handleAddAdditionalImages}
+                        style={{ display: 'none', visibility: 'hidden' }}
+                        disabled={loading}
+                      />
+                    </div>
+
+                    <div className={styles.additionalImagesList}>
+                      {/* Существующие дополнительные изображения (только URL) */}
+                      {additionalImageUrls.map((url, index) => (
+                        <div key={`existing-${index}`} className={styles.additionalImageItem}>
+                          <img
+                            src={url}
+                            alt={`Дополнительное изображение ${index + 1}`}
+                            className={styles.additionalImagePreview}
+                            onError={(e) => {
+                              e.currentTarget.src = 'https://via.placeholder.com/80?text=No+Image';
+                            }}
+                          />
+                          <button
+                            type="button"
+                            className={styles.removeAdditionalImage}
+                            onClick={() => {
+                              // Удаляем URL из списка
+                              setAdditionalImageUrls((prev) => prev.filter((_, i) => i !== index));
+                            }}
+                            title="Удалить изображение"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ))}
+
+                      {/* Новые дополнительные изображения (файлы) */}
+                      {additionalImageFiles.map((file, index) => (
+                        <div key={`new-${index}`} className={styles.additionalImageItem}>
+                          <img
+                            src={URL.createObjectURL(file)}
+                            alt={`Новое изображение ${index + 1}`}
+                            className={styles.additionalImagePreview}
+                          />
+                          <button
+                            type="button"
+                            className={styles.removeAdditionalImage}
+                            onClick={() => {
+                              // Удаляем файл из списка
+                              setAdditionalImageFiles((prev) => prev.filter((_, i) => i !== index));
+                              // Освобождаем URL
+                              URL.revokeObjectURL(URL.createObjectURL(file));
+                            }}
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className={styles.column}>

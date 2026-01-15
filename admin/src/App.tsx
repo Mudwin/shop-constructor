@@ -53,8 +53,18 @@ export default function App() {
     );
   }
 
+  console.log('App State:', {
+    userId,
+    isInitializing,
+    isLoading,
+    isAuthCallback,
+    path: window.location.pathname,
+  });
+
   // После инициализации, если пользователь не залогинен - редирект на логин
   if (!userId && !isAuthCallback) {
+    console.warn('REDIRECTING TO AUTH-CALLBACK BECAUSE userId IS EMPTY');
+
     return (
       <BrowserRouter>
         <Routes>

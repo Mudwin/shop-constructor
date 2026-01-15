@@ -1,4 +1,5 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';
+const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL || 'http://localhost:8000';
 
 class ApiClient {
   private _token: string | null = null;
@@ -25,11 +26,12 @@ class ApiClient {
   clearTokens() {
     this._token = null;
     this._refreshToken = null;
+    console.trace('Tokens cleared at:');
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
   }
 
-  private async request<T = any>(endpoint: string, options: RequestInit = {}): Promise<T> {
+  public async request<T = any>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const url = `${API_BASE_URL}${endpoint}`;
 
     const passedHeaders = (options.headers as Record<string, string>) || {};
@@ -50,7 +52,7 @@ class ApiClient {
       credentials: 'include',
     });
 
-    if (response.status === 401 && !endpoint.startsWith('/refresh-token')) {
+    if (response.status === 401 && !endpoint.includes('refresh-token')) {
       const refreshToken = this.getRefreshToken();
       if (refreshToken) {
         try {
@@ -101,9 +103,20 @@ class ApiClient {
   }
 
   async refreshToken(refresh_token: string): Promise<any> {
-    return this.request(`/refresh-token?refresh_token=${encodeURIComponent(refresh_token)}`, {
+    const url = `${API_BASE_URL}/refresh-token?refresh_token=${encodeURIComponent(refresh_token)}`;
+
+    const response = await fetch(url, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
+
+    if (!response.ok) {
+      throw new Error('Refresh token expired or invalid');
+    }
+
+    return response.json();
   }
 
   async completeProfile(data: { first_name: string; last_name: string; phone: string }) {
@@ -313,15 +326,36 @@ class ApiClient {
   }
 
   // ==================== Загрузка файлов ====================
-  async uploadImage(shop_id: number, file: File, folder: string = 'products') {
+  async uploadImage(shop_id: number, file: File, folder: string = 'products', product_id?: number) {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('folder', folder);
+
+    if (product_id) {
+      formData.append('product_id', product_id.toString());
+    }
 
     return this.request(`/upload/shops/${shop_id}/upload/image`, {
       method: 'POST',
       body: formData,
     });
+  }
+
+  getFullImageUrl(relativeUrl: string | null): string | null {
+    if (!relativeUrl) return null;
+
+    // Если URL уже абсолютный
+    if (relativeUrl.startsWith('http://') || relativeUrl.startsWith('https://')) {
+      return relativeUrl;
+    }
+
+    // Если URL начинается с /uploads, добавляем базовый URL бэкенда
+    if (relativeUrl.startsWith('/uploads/')) {
+      return `${BACKEND_BASE_URL}${relativeUrl}`;
+    }
+
+    // Если это просто имя файла, добавляем базовый путь
+    return `${BACKEND_BASE_URL}/uploads/products/${relativeUrl}`;
   }
 }
 

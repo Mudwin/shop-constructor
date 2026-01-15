@@ -12,7 +12,7 @@ interface ButtonProps {
   disabled?: boolean;
   paddingInline?: number;
   paddingBlock?: number;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent) => void;
   type?: 'button' | 'submit' | 'reset';
 }
 

@@ -16,7 +16,7 @@
 
 .formColumns {
   display: flex;
-  gap: 100px;
+  gap: 80px;
 }
 
 .column {
@@ -74,4 +74,135 @@
 
 .loadingNote {
   color: #2196f3;
+}
+
+.imageUploadSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-light-gray);
+}
+
+.imageUploadContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-top: 10px;
+}
+
+.mainImageUpload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.imageHint {
+  font-size: 12px;
+  color: var(--color-dark-gray);
+  text-align: center;
+}
+
+.additionalImages {
+  flex: 1;
+}
+
+.additionalImagesLabel {
+  display: flex;
+  text-align: center;
+  /* flex-direction: column; */
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: var(--color-dark-gray);
+}
+
+.additionalImagesList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.additionalImageItem {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: var(--border-radius-1);
+  overflow: hidden;
+  border: 1px solid var(--color-gray);
+}
+
+.additionalImagePreview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.removeAdditionalImage {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 20px;
+  height: 20px;
+  background: rgba(255, 0, 0, 0.8);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.removeAdditionalImage:hover {
+  background: rgba(255, 0, 0, 1);
+}
+
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+  height: 100%;
+}
+
+.errorMessage {
+  color: var(--color-red);
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.retryText {
+  color: var(--color-dark-gray);
+  font-size: 10px;
+  text-align: center;
+}
+
+.addImagesButton {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.addImagesButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.addImagesButton {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.addImagesButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
