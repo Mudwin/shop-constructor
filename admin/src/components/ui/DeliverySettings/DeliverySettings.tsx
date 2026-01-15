@@ -10,7 +10,7 @@ export default function DeliverySettings() {
         <div className={styles.comingSoonIcon}>🚚</div>
         <p className={styles.comingSoonNote}>
           <br />• Самовывоз
-          <br />• Курьерскую доставку
+          <br />• Курьерская доставка
           <br />• Почтовые службы
           <br />• Стоимость и сроки доставки
         </p>

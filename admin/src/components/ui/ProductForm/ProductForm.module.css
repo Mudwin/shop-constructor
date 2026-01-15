@@ -112,7 +112,7 @@
 .additionalImagesLabel {
   display: flex;
   text-align: center;
-  /* flex-direction: column; */
+  flex-direction: column;
   gap: 20px;
   align-items: center;
   margin-bottom: 10px;

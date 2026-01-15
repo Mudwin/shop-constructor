@@ -28,15 +28,15 @@ export default function ProfileBlock({ from }: ProfileProps) {
         <div className={styles.image}>
           <ProfileImage />
         </div>
-        <div className={styles.name}>Петров Дмитрий Петрович</div>
+        <div className={styles.name}>spiderfrommars4@gmail.com</div>
 
         {from === 'profile' ? (
           <Button
             fontSize={12}
             color="blue"
             onClick={handleButtonClick}
-            paddingBlock="5"
-            paddingInline="0"
+            paddingBlock={5}
+            paddingInline={0}
           >
             Вернуться в панель администратора
           </Button>
@@ -45,8 +45,8 @@ export default function ProfileBlock({ from }: ProfileProps) {
             fontSize={13}
             color="blue"
             onClick={handleButtonClick}
-            paddingBlock="6"
-            paddingInline="20"
+            paddingBlock={6}
+            paddingInline={20}
           >
             Изменить
           </Button>

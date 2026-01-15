@@ -30,7 +30,7 @@ const styles = {
 
 const backgroundColors: Record<ButtonTypes, string> = {
   enter: 'var(--color-blue-transparent)',
-  add: 'var(--color-teal)',
+  add: '#00bfa5',
   delete: 'var(--color-red)',
   change: 'var(--color-gray)',
 };

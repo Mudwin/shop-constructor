@@ -61,7 +61,6 @@ export default function App() {
     path: window.location.pathname,
   });
 
-  // После инициализации, если пользователь не залогинен - редирект на логин
   if (!userId && !isAuthCallback) {
     console.warn('REDIRECTING TO AUTH-CALLBACK BECAUSE userId IS EMPTY');
 

@@ -378,7 +378,80 @@ export default function ProductForm({ productId, onSuccess }: ProductFormProps) 
                 value={formData.sku}
                 onChange={handleChange}
               />
+            </div>
 
+            <div className={styles.column}>
+              <div className={styles.formGroup}>
+                <FormLabel element="category">Категория</FormLabel>
+                <select
+                  name="category_id"
+                  value={formData.category_id}
+                  onChange={handleSelectChange}
+                  className={styles.select}
+                  disabled={loading || loadingCategories}
+                >
+                  <option value="">Выберите категорию</option>
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+                {loadingCategories && (
+                  <div className={styles.loadingNote}>Загрузка категорий...</div>
+                )}
+                {categories.length === 0 && !loadingCategories && (
+                  <div className={styles.note}>
+                    Категории не созданы. Создайте категории во вкладке "Настройки"
+                  </div>
+                )}
+              </div>
+
+              <FormTextField
+                id="price"
+                name="price"
+                type="input"
+                inputType="number"
+                label="Цена *"
+                placeholder="0.00"
+                value={formData.price}
+                onChange={handleChange}
+                min="0"
+                step="0.01"
+                required
+              />
+
+              <FormTextField
+                id="stock_quantity"
+                name="stock_quantity"
+                type="input"
+                inputType="number"
+                label="Количество на складе *"
+                placeholder="0"
+                value={formData.stock_quantity}
+                onChange={handleChange}
+                min="0"
+                required
+              />
+
+              <div className={styles.formGroup}>
+                <FormLabel element="status">Статус</FormLabel>
+                <select
+                  name="status"
+                  value={formData.status}
+                  onChange={handleSelectChange}
+                  className={styles.select}
+                  disabled={loading}
+                >
+                  <option value="active">В наличии</option>
+                  <option value="pending">Скоро поступит</option>
+                  <option value="inactive">Снят с продажи</option>
+                  <option value="draft">Черновик</option>
+                </select>
+              </div>
+            </div>
+
+            <div className={styles.column}>
               {/* Блок загрузки изображений */}
               <div className={styles.imageUploadSection}>
                 <FormLabel element="image">Изображение товара</FormLabel>
@@ -478,77 +551,6 @@ export default function ProductForm({ productId, onSuccess }: ProductFormProps) 
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <div className={styles.column}>
-              <div className={styles.formGroup}>
-                <FormLabel element="category">Категория</FormLabel>
-                <select
-                  name="category_id"
-                  value={formData.category_id}
-                  onChange={handleSelectChange}
-                  className={styles.select}
-                  disabled={loading || loadingCategories}
-                >
-                  <option value="">Выберите категорию</option>
-                  {categories.map((category) => (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
-                {loadingCategories && (
-                  <div className={styles.loadingNote}>Загрузка категорий...</div>
-                )}
-                {categories.length === 0 && !loadingCategories && (
-                  <div className={styles.note}>
-                    Категории не созданы. Создайте категории во вкладке "Настройки"
-                  </div>
-                )}
-              </div>
-
-              <FormTextField
-                id="price"
-                name="price"
-                type="input"
-                inputType="number"
-                label="Цена *"
-                placeholder="0.00"
-                value={formData.price}
-                onChange={handleChange}
-                min="0"
-                step="0.01"
-                required
-              />
-
-              <FormTextField
-                id="stock_quantity"
-                name="stock_quantity"
-                type="input"
-                inputType="number"
-                label="Количество на складе *"
-                placeholder="0"
-                value={formData.stock_quantity}
-                onChange={handleChange}
-                min="0"
-                required
-              />
-
-              <div className={styles.formGroup}>
-                <FormLabel element="status">Статус</FormLabel>
-                <select
-                  name="status"
-                  value={formData.status}
-                  onChange={handleSelectChange}
-                  className={styles.select}
-                  disabled={loading}
-                >
-                  <option value="active">В наличии</option>
-                  <option value="pending">Скоро поступит</option>
-                  <option value="inactive">Снят с продажи</option>
-                  <option value="draft">Черновик</option>
-                </select>
               </div>
             </div>
           </div>

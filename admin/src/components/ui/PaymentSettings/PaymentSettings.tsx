@@ -11,7 +11,7 @@ export default function PaymentSettings() {
         <p className={styles.comingSoonNote}>
           <br />• Банковские карты
           <br />• Электронные кошельки
-          <br />• Оплату при получении
+          <br />• Оплата при получении
           <br />• И другие способы оплаты
         </p>
       </div>
